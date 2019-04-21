@@ -31,6 +31,13 @@ Please follow these steps when initially setting up your s3zilla:
     If using Windows, type "Environment Variables" into the search box and then save the environment variables
     with the same names shown above.
   </li>
+  <li>
+      Please see the 
+      <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html">
+          documentation
+      </a>
+      for more information on setting up credentials.
+  </li>
 </ol>
 <br>
 Since Amazon S3 is intended for files, if you attempt to upload a directory to a selected bucket, it will
