@@ -3,9 +3,9 @@
 
 <img src="https://github.com/rootVIII/s3zilla/blob/master/sc.png" alt="ex" height="800" width="950">
 <hr>
-<strong>Requirements (Windows/Linux)</strong>:
+<strong>Requirements: Python 3</strong>:
 <br>
-<code>pip3 install boto3</code>
+<code>pip install boto3</code>
 <br>
 <br>
 <strong>Linux</strong>:
