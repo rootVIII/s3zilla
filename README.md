@@ -8,7 +8,8 @@
 <code>pip3 install boto3</code>
 <br>
 <br>
-<strong>Linux</strong>: 
+<strong>Linux</strong>:
+<br> 
 <code>sudo apt-get install python3-tk</code>
 <br>
 <code>sudo apt-get install libssl-dev</code>
