@@ -3,18 +3,16 @@
 
 <img src="https://github.com/rootVIII/s3zilla/blob/master/sc.png" alt="ex" height="800" width="950">
 <hr>
-Requirements:
+<strong>Requirements (Windows/Linux)</strong>:
 <br>
 <code>pip3 install boto3</code>
 <br>
 <br>
-<strong>Linux: 
+<strong>Linux</strong>: 
 <code>sudo apt-get install python3-tk</code>
 <br>
 <code>sudo apt-get install libssl-dev</code>
 <br>
-<br>
-s3zilla uses an encrypted version of your rootkey.csv file.
 <br>
 Please follow these steps when initially setting up your s3zilla:
 <br>
@@ -25,16 +23,21 @@ Please follow these steps when initially setting up your s3zilla:
     Place the file into your home directory if on Linux.
   </li>
   <li>
-    Or save <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> in your .bashrc or .bash_profile.
+    <strong>Or</strong> save <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> in
+    your .bashrc or .bash_profile as environment variables.
   </li>
   <li>
-    Windows: In search box type "Environment Variables" - save the environment variables as shown above.
+    If using Windows, type "Environment Variables" into the search box and then save the environment variables
+    with the same names shown above.
   </li>
 </ol>
 <br>
 <br>
 Since Amazon S3 is intended for files, if you attempt to upload a directory to a selected bucket, it will
 be <strong>converted into a compressed .zip file prior to upload</strong>.
+<br>
+The code for the Windows version is exactly the same as the Linux version with the exception of some
+placement/sizing of the Tkinter widgets.
 <br>
 <hr>
 This was developed on Ubuntu 18.04
