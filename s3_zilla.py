@@ -521,7 +521,10 @@ class S3Zilla:
 
     def upload(self):
         if not self.drp_sel or not self.dir:
-            m = "Ensure a file and bucket have been selected"
+            m = "Ensure a local path and S3 bucket are selected"
+            self.set_status_label(m)
+        elif not self.get_local_sel():
+            m = "Ensure files are selected to upload"
             self.set_status_label(m)
         else:
             for selection in self.get_local_sel():
@@ -541,6 +544,9 @@ class S3Zilla:
     def download(self):
         if not self.drp_sel or not self.dir:
             m = "Ensure a file and bucket have been selected"
+            self.set_status_label(m)
+        elif not self.get_s3_sel():
+            m = "Ensure files are selected to download"
             self.set_status_label(m)
         else:
             for selection in self.get_s3_sel():
