@@ -35,6 +35,8 @@ Please follow these steps when initially setting up your s3zilla:
 Since Amazon S3 is intended for files, if you attempt to upload a directory to a selected bucket, it will
 be <strong>converted into a compressed .zip file prior to upload</strong>.
 <br><br>
+Multiple files can be selected at once for a single upload or download.
+<br><br>
 The code for the Windows version is exactly the same as the Linux version with the exception of some
 placement/sizing of the Tkinter widgets.
 <br>
