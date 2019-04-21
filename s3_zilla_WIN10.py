@@ -1,4 +1,3 @@
-#! /usr/bin/python3
 from tkinter import *
 from tkinter.filedialog import askdirectory
 from os import listdir, remove, execl
