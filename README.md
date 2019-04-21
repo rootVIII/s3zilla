@@ -32,10 +32,9 @@ Please follow these steps when initially setting up your s3zilla:
   </li>
 </ol>
 <br>
-<br>
 Since Amazon S3 is intended for files, if you attempt to upload a directory to a selected bucket, it will
 be <strong>converted into a compressed .zip file prior to upload</strong>.
-<br>
+<br><br>
 The code for the Windows version is exactly the same as the Linux version with the exception of some
 placement/sizing of the Tkinter widgets.
 <br>
