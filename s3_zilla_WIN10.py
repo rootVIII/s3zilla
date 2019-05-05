@@ -1,3 +1,4 @@
+# James Loye Colley
 from tkinter import *
 from tkinter.filedialog import askdirectory
 from os import listdir, remove, execl
@@ -596,7 +597,6 @@ class S3Zilla:
                 m = "%s created: restarting..." % self.bucket_name
                 self.set_status_label(m)
                 self.status_label.update_idletasks()
-                sleep(2)
                 res = executable
                 execl(res, res, *argv)
 

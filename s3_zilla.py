@@ -6,8 +6,8 @@ from os import listdir, remove, execl
 from shutil import rmtree, make_archive
 from getpass import getuser, getpass
 from os.path import isdir, basename
-from sys import executable, argv
 from time import sleep
+from sys import executable, argv
 try:
     import boto3
     from botocore.exceptions import ClientError
@@ -598,7 +598,6 @@ class S3Zilla:
                 m = "%s created: restarting..." % self.bucket_name
                 self.set_status_label(m)
                 self.status_label.update_idletasks()
-                sleep(2)
                 res = executable
                 execl(res, res, *argv)
 
