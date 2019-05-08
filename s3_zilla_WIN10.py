@@ -69,6 +69,8 @@ class S3Zilla:
         self.folder_path = StringVar()
         self.dropdown = StringVar()
         self.dropdown_data = self.populate_dropdown()
+        if not self.dropdown_data:
+            self.dropdown_data = ['None Available']
         self.deleted = False
         self.local_sel, self.s3_sel = ([] for i in range(2))
         self.title_label = Label(
