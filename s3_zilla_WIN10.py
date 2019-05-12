@@ -495,7 +495,10 @@ class S3Zilla:
             self.set_found_local_label(n)
 
     def refresh_s3(self):
-        if not self.drp_sel:
+        if 'none available' in self.dropdown_data:
+            m = "Please create at least one S3 bucket"
+            self.set_status_label(m)
+        elif not self.drp_sel:
             m = "Please select a bucket from the drop-down list"
             self.set_status_label(m)
         else:
