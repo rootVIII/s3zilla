@@ -4,9 +4,9 @@
 <img src="https://github.com/rootVIII/s3zilla/blob/master/sc.png" alt="ex" height="800" width="950">
 <hr>
 <br>
-s3_zilla.py -> Linux Version
+<code>s3_zilla.py</code> -> Linux Version
 <br>
-s3_zilla_WIND10.py -> Windows Version
+<code> s3_zilla_WIND10.py</code>  -> Windows Version
 <br><br>
 <strong>Python3 is required</strong>
 <br><br>
