@@ -27,7 +27,7 @@ Please see the
 <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">
     documentation
 </a>
-for setting up your API keys, especially the <i>Configuration Settings and Precedence</i> section
+for setting up your API keys, especially the <i>Configuration Settings and Precedence</i> section <br>
 (I prefer environment variables)
 <br><br>
 If you attempt to upload a directory to a selected bucket, it will
