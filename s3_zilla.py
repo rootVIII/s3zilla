@@ -596,7 +596,7 @@ class S3Zilla:
                 self.s3.create_bucket(Bucket=self.bucket_name)
             except ClientError as ce:
                 pre_exists = True
-                m = "Bucket name already in use. "
+                m = "Bucket name is already in use. "
                 m += "Choose a different name."
                 self.set_status_label(m)
             if not pre_exists:
