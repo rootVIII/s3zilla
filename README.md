@@ -28,10 +28,10 @@ Please see the
     documentation
 </a>
 for setting up your API keys, especially the <i>Configuration Settings and Precedence</i> section <br>
-(I prefer environment variables)
+(I prefer environment variables).
 <br><br>
-If you attempt to upload a directory to a selected bucket, it will
-be converted into a compressed .zip file prior to upload.
+If you attempt to upload a <b>directory</b> to a selected bucket, it will
+be converted into a compressed .zip format prior to upload.
 <br><br>
 Multiple files can be selected at once for a single upload or download.
 <br><br>
