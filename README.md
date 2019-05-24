@@ -23,7 +23,7 @@ boto3 is also required:
 <br>
 <br>
 <br>
-Please see the 
+See the 
 <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">
     documentation
 </a>
