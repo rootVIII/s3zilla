@@ -15,7 +15,7 @@ boto3 is also required:
 <code>pip install boto3</code>
 <br>
 <br>
-<strong>Additional Linux Requirements:</strong>:
+<strong>Additional Linux Requirements:</strong>
 <br> 
 <code>sudo apt-get install python3-tk</code>
 <br>
@@ -27,8 +27,9 @@ Please see the
 <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">
     documentation
 </a>
-for setting up your API keys, especially the <i>Configuration Settings and Precedence</i> section <br>
-(I prefer environment variables).
+for setting up your S3 API keys, especially the <i>Configuration Settings and Precedence</i> section.<br>
+I prefer using environment variables although you may also use the credentials file as well.<br>
+Neither one requires any changes in the code. Simply set your API keys and start using the program.
 <br><br>
 If you attempt to upload a <b>directory</b> to a selected bucket, it will
 be converted into a compressed .zip format prior to upload.
