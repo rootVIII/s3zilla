@@ -33,6 +33,8 @@ for setting up your API keys, especially the <i>Configuration Settings and Prece
 If you attempt to upload a <b>directory</b> to a selected bucket, it will
 be converted into a compressed .zip format prior to upload.
 <br><br>
+A trailing / after a name in the file explorer denotes a directory.
+<br><br>
 Multiple files can be selected at once for a single upload or download.
 <br><br>
 The code for the Windows version is exactly the same as the Linux version with the exception of some
