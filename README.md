@@ -6,7 +6,7 @@
 <br>
 <code>s3_zilla.py</code> -> Linux Version
 <br>
-<code> s3_zilla_WIND10.py</code>  -> Windows Version
+<code> s3_zilla_WIN_10.py</code>  -> Windows Version
 <br><br>
 <strong>Python3 is required</strong>
 <br><br>
