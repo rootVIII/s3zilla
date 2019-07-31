@@ -79,7 +79,7 @@ class S3Zilla:
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
             font="Helvetica 10 bold",
-            width=120,
+            width=120
         )
         self.local_label = Label(
             master,
