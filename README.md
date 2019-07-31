@@ -41,6 +41,6 @@ Multiple files can be selected at once for a single upload or download.
 The code for the Windows version is exactly the same as the Linux version with the exception of some
 placement/sizing of the Tkinter widgets.
 <hr>
-This was developed on Ubuntu 18.04
+This was developed and tested on Ubuntu 18.04. Also tested on Windows 10
 <br>
 <b>Author: James Loye Colley  2019</b>
