@@ -3,33 +3,36 @@
 
 <img src="https://github.com/rootVIII/s3zilla/blob/master/sc.png" alt="ex" height="800" width="950">
 <hr>
+
+
+<code>python s3zilla.py</code>
+
+<code>./s3zilla.py</code>
+
 <br>
-<code>s3_zilla.py</code> -> Linux Version
-<br>
-<code> s3_zilla_WIN10.py</code>  -> Windows Version
-<br><br>
 <strong>Python3 is required</strong>
-<br><br>
-boto3 is also required:
-<br>
-<code>pip install boto3</code>
-<br>
+
+
+boto3 is also required:  <code>pip install boto3</code>
+
 <br>
 <strong>Additional Linux Requirements:</strong>
-<br> 
+
 <code>sudo apt-get install python3-tk</code>
-<br>
+
 <code>sudo apt-get install libssl-dev</code>
-<br>
-<br>
-<br>
-See the 
-<a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">
-    documentation
-</a>
-for setting up your S3 API keys, especially the <i>Configuration Settings and Precedence</i> section.<br>
-I prefer using environment variables although you may also use the credentials file as well.<br>
-Neither one requires any changes in the code. Simply set your API keys and start using the program.
+
+
+See the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">documentation</a>
+for setting up your S3 API keys, especially the
+<i>Configuration Settings and Precedence</i> section.
+<br><br>
+I prefer using environment variables although you may
+also use the credentials file as well.
+<br><br>
+Neither one requires any changes in the code.
+Simply set your API keys with your method of choice
+and start using the program.
 <br><br>
 If you attempt to upload a <b>directory</b> to a selected bucket, it will
 be converted into a compressed .zip format prior to upload.
@@ -37,10 +40,8 @@ be converted into a compressed .zip format prior to upload.
 A trailing / after a name in the file explorer denotes a directory.
 <br><br>
 Multiple files can be selected at once for a single upload or download.
-<br><br>
-The code for the Windows version is exactly the same as the Linux version with the exception of some
-placement/sizing of the Tkinter widgets.
 <hr>
+
 This was developed and tested on Ubuntu 18.04. Also tested on Windows 10
-<br>
+
 <b>Author: James Loye Colley  2019</b>
