@@ -1,5 +1,5 @@
-# James Loye Colley
-from tkinter import *
+from tkinter import Menu, StringVar, Label, OptionMenu
+from tkinter import Button, Listbox, Text, E, W
 from tkinter.filedialog import askdirectory
 from os import listdir, remove, execl
 from shutil import rmtree, make_archive
@@ -7,15 +7,16 @@ from getpass import getuser
 from os.path import isdir, basename
 from sys import executable, argv
 from time import sleep
+
 try:
-    from botocore.exceptions import ClientError
     import boto3
+    from botocore.exceptions import ClientError
 except ImportError as e:
     print('Unable to import boto3\n%s' % e)
     exit(1)
 
 
-class S3Zilla:
+class S3ZillaWin10:
     def __init__(self, master):
         error_msg = "Ensure S3 is configured on your machine:"
         try:
@@ -604,9 +605,3 @@ class S3Zilla:
                 self.status_label.update_idletasks()
                 res = executable
                 execl(res, res, *argv)
-
-
-if __name__ == "__main__":
-    root = Tk()
-    s3_zilla = S3Zilla(root)
-    root.mainloop()

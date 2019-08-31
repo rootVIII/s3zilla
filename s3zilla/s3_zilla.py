@@ -1,19 +1,19 @@
-#! /usr/bin/python3
-# James Loye Colley
-from tkinter import *
+from tkinter import Menu, StringVar, Label, OptionMenu
+from tkinter import Button, Listbox, Text, E, W
 from tkinter.filedialog import askdirectory
 from os import listdir, remove, execl
 from shutil import rmtree, make_archive
-from getpass import getuser, getpass
+from getpass import getuser
 from os.path import isdir, basename
-from time import sleep
 from sys import executable, argv
+from time import sleep
+
 try:
     import boto3
     from botocore.exceptions import ClientError
 except ImportError as e:
     print("Unable to import boto3\n%s" % e)
-    exit()
+    exit(1)
 
 
 class S3Zilla:
@@ -444,8 +444,8 @@ class S3Zilla:
             else:
                 try:
                     rmtree("%s/%s" % (self.dir, f))
-                except Exception as e:
-                    self.set_status_label("%s" % e)
+                except Exception as err:
+                    self.set_status_label("%s" % err)
                     self.status_label.update_idletasks()
                 self.del_local(files_remaining)
         self.deleted = True
@@ -605,9 +605,3 @@ class S3Zilla:
                 self.status_label.update_idletasks()
                 res = executable
                 execl(res, res, *argv)
-
-
-if __name__ == "__main__":
-    root = Tk()
-    s3_zilla = S3Zilla(root)
-    root.mainloop()
