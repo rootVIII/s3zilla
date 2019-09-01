@@ -9,11 +9,10 @@ def run_gui_thread():
     if platform != 'win32':
         from s3zilla import S3Zilla
         S3Zilla(root)
-        root.mainloop()
     else:
         from s3zilla import S3ZillaWin10
         S3ZillaWin10(root)
-        root.mainloop()
+    root.mainloop()
 
 
 if __name__ == "__main__":
