@@ -33,6 +33,7 @@ class S3ZillaWin10:
             'grey': '#262626',
             'cyan': '#80DFFF'
         }
+        self.greeting = 'Hello %s' % getuser()
         self.master = master
         self.master.title('Amazon S3 File Transfer Client')
         self.master.configure(bg=self.colors['grey'])
@@ -62,7 +63,7 @@ class S3ZillaWin10:
             command=self.refresh_s3
         )
         menu.add_cascade(label='Refresh', menu=refresh)
-        self.dir, self.drp_sel, self.bucket_name = '', '', ''
+        self.dir, self.drp_sel, self.bucket_name = ['' for _ in range(3)]
         self.folder_path = StringVar()
         self.dropdown = StringVar()
         self.dropdown_data = self.populate_dropdown()
@@ -75,7 +76,7 @@ class S3ZillaWin10:
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
             font='Helvetica 10 bold',
-            width=120,
+            width=120
         )
         self.local_label = Label(
             master,
@@ -241,7 +242,7 @@ class S3ZillaWin10:
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
-            text='Hello %s' % getuser(),
+            text=self.greeting,
             width=70
         )
         self.create_bucket_label = Label(
@@ -267,7 +268,6 @@ class S3ZillaWin10:
             highlightthickness=2,
             command=self.create_bucket
         )
-        # ####### begin grid placement ####### #
         self.title_label.grid(
             row=0,
             sticky=E+W,
@@ -484,7 +484,7 @@ class S3ZillaWin10:
             d = [f if not isdir(x+f) else f + '/' for f in sorted(listdir(x))]
             self.ex_loc.insert('end', *d)
             if not self.deleted:
-                m = 'Hello %s' % getuser()
+                m = self.greeting
             else:
                 m = 'FINISHED DELETING'
                 self.deleted = False
@@ -501,18 +501,23 @@ class S3ZillaWin10:
             self.set_status_label(m)
         else:
             self.ex_s3.delete(0, 'end')
-            self.ex_s3.insert('end', *self.get_bucket_contents())
-            self.set_status_label('Hello %s' % getuser())
-            self.set_s3_bucket_label(self.drp_sel)
-            n = '%s files found' % str(self.ex_s3.size())
-            self.set_found_s3_label(n)
-            self.found_label_s3.update_idletasks()
-            if not self.deleted:
-                m = 'Hello %s' % getuser()
+            try:
+                self.ex_s3.insert('end', *self.get_bucket_contents())
+            except Exception:
+                m = 'Unable to find bucket'
+                self.set_status_label(m)
             else:
-                m = 'FINISHED DELETING'
-                self.deleted = False
-            self.set_status_label(m)
+                self.set_status_label(self.greeting)
+                self.set_s3_bucket_label(self.drp_sel)
+                n = '%s files found' % str(self.ex_s3.size())
+                self.set_found_s3_label(n)
+                self.found_label_s3.update_idletasks()
+                if not self.deleted:
+                    m = self.greeting
+                else:
+                    m = 'FINISHED DELETING'
+                    self.deleted = False
+                self.set_status_label(m)
 
     def finished(self, incoming_message):
         d = 'FINISHED %s' % incoming_message
@@ -594,7 +599,7 @@ class S3ZillaWin10:
             except ClientError:
                 pre_exists = True
                 m = 'Bucket name is already in use. '
-                m += "Choose a different name."
+                m += 'Choose a different name.'
                 self.set_status_label(m)
             if not pre_exists:
                 m = '%s created: restarting...' % self.bucket_name

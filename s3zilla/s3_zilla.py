@@ -1,5 +1,5 @@
 from tkinter import Menu, StringVar, Label, OptionMenu
-from tkinter import Button, Listbox, Text, E, W
+from tkinter import Button, Listbox, Text, E, W, END
 from tkinter.filedialog import askdirectory
 from os import listdir, remove, execl
 from shutil import rmtree, make_archive
@@ -12,22 +12,18 @@ try:
     import boto3
     from botocore.exceptions import ClientError
 except ImportError as e:
-    print("Unable to import boto3\n%s" % e)
+    print('Unable to import boto3\n%s' % e)
     exit(1)
 
 
 class S3Zilla:
     def __init__(self, master):
-        error_msg = "Ensure S3 is configured on your machine:"
+        error_msg = 'Ensure S3 is configured on your machine:'
         try:
             self.s3 = boto3.resource('s3')
-        except Exception as e:
-            print("%s: %s" % (error_msg, e))
-            exit(1)
-        try:
             self.s3c = boto3.client('s3')
         except Exception as err:
-            print("%s: %s" % (error_msg, err))
+            print('%s: %s' % (error_msg, err))
             exit(1)
         self.colors = {
             'light-grey': '#D9D9D9',
@@ -37,10 +33,11 @@ class S3Zilla:
             'grey': '#262626',
             'cyan': '#80DFFF'
         }
+        self.greeting = 'Hello %s' % getuser()
         self.master = master
-        self.master.title("Amazon S3 File Transfer Client")
+        self.master.title('Amazon S3 File Transfer Client')
         self.master.configure(bg=self.colors['grey'])
-        self.master.geometry("885x645")
+        self.master.geometry('885x645')
         menu = Menu(self.master)
         menu.config(
             background=self.colors['grey'],
@@ -49,24 +46,24 @@ class S3Zilla:
         self.master.config(menu=menu)
         file = Menu(menu)
         file.add_command(
-            label="Exit",
+            label='Exit',
             command=self.quit
         )
         menu.add_cascade(
-            label="File",
+            label='File',
             menu=file
         )
         refresh = Menu(menu)
         refresh.add_command(
-            label="Local",
+            label='Local',
             command=self.refresh_local
         )
         refresh.add_command(
-            label="S3",
+            label='S3',
             command=self.refresh_s3
         )
-        menu.add_cascade(label="Refresh", menu=refresh)
-        self.dir, self.drp_sel, self.bucket_name = '', '', ''
+        menu.add_cascade(label='Refresh', menu=refresh)
+        self.dir, self.drp_sel, self.bucket_name = ['' for _ in range(3)]
         self.folder_path = StringVar()
         self.dropdown = StringVar()
         self.dropdown_data = self.populate_dropdown()
@@ -78,23 +75,23 @@ class S3Zilla:
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
-            font="Helvetica 10 bold",
+            font='Helvetica 10 bold',
             width=120
         )
         self.local_label = Label(
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
-            text="LOCAL FILE SYSTEM",
-            font="Helvetica 10 bold underline",
+            text='LOCAL FILE SYSTEM',
+            font='Helvetica 10 bold underline',
             width=60
         )
         self.s3_label = Label(
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
-            text="AMAZON  S3",
-            font="Helvetica 10 bold underline",
+            text='AMAZON  S3',
+            font='Helvetica 10 bold underline',
             underline=True,
             width=60
         )
@@ -115,7 +112,7 @@ class S3Zilla:
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['blue'],
-            text="Browse",
+            text='Browse',
             width=30,
             highlightbackground=self.colors['black'],
             highlightthickness=2,
@@ -125,23 +122,23 @@ class S3Zilla:
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
-            text="No directory selected",
+            text='No directory selected',
             width=37,
-            font="Helvetica 10"
+            font='Helvetica 10'
         )
         self.bucket_label = Label(
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
-            text="No bucket selected",
+            text='No bucket selected',
             width=37,
-            font="Helvetica 10"
+            font='Helvetica 10'
         )
         self.refresh_btn_local = Button(
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['blue'],
-            text="REFRESH",
+            text='REFRESH',
             width=30,
             highlightbackground=self.colors['black'],
             highlightthickness=2,
@@ -151,7 +148,7 @@ class S3Zilla:
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['blue'],
-            text="REFRESH",
+            text='REFRESH',
             width=30,
             highlightbackground=self.colors['black'],
             highlightthickness=2,
@@ -162,14 +159,14 @@ class S3Zilla:
             fg=self.colors['light-grey'],
             bg=self.colors['blue'],
             width=30,
-            text="Local File System:  "
+            text='Local File System:  '
         )
         self.explorer_label_s3 = Label(
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['black'],
             width=30,
-            text="S3 File System"
+            text='S3 File System'
         )
         self.ex_loc = Listbox(
             master,
@@ -178,7 +175,7 @@ class S3Zilla:
             width=49,
             height=18,
             highlightcolor=self.colors['black'],
-            selectmode="multiple"
+            selectmode='multiple'
         )
         self.ex_s3 = Listbox(
             master,
@@ -193,7 +190,7 @@ class S3Zilla:
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['blue'],
-            text="Upload ->",
+            text='Upload ->',
             width=20,
             highlightbackground=self.colors['black'],
             highlightthickness=2,
@@ -203,7 +200,7 @@ class S3Zilla:
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['blue'],
-            text="<- Download",
+            text='<- Download',
             width=20,
             highlightbackground=self.colors['black'],
             highlightthickness=2,
@@ -213,7 +210,7 @@ class S3Zilla:
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['red'],
-            text="DELETE",
+            text='DELETE',
             width=20,
             highlightbackground=self.colors['black'],
             command=self.delete_local_records
@@ -222,7 +219,7 @@ class S3Zilla:
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['red'],
-            text="DELETE",
+            text='DELETE',
             width=20,
             highlightbackground=self.colors['black'],
             command=self.delete_s3_records
@@ -231,28 +228,28 @@ class S3Zilla:
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
-            text="found local",
+            text='found local',
             width=54
         )
         self.found_label_s3 = Label(
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
-            text="found s3",
+            text='found s3',
             width=54
         )
         self.status_label = Label(
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
-            text="Hello " + getuser(),
+            text=self.greeting,
             width=54
         )
         self.create_bucket_label = Label(
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['grey'],
-            text="New Bucket:",
+            text='New Bucket:',
         )
         self.create_bucket_name = Text(
             master,
@@ -265,13 +262,12 @@ class S3Zilla:
             master,
             fg=self.colors['light-grey'],
             bg=self.colors['blue'],
-            text="Create",
+            text='Create',
             width=5,
             highlightbackground=self.colors['black'],
             highlightthickness=2,
             command=self.create_bucket
         )
-        # ####### begin grid placement ####### #
         self.title_label.grid(
             row=0,
             sticky=E+W,
@@ -406,12 +402,13 @@ class S3Zilla:
             padx=20,
             pady=0
         )
-        n1 = "%s files found" % str(self.ex_loc.size())
+        n1 = '%s files found' % str(self.ex_loc.size())
         self.set_found_local_label(n1)
-        n2 = "%s files found" % str(self.ex_s3.size())
+        n2 = '%s files found' % str(self.ex_s3.size())
         self.set_found_s3_label(n2)
 
-    def quit(self):
+    @staticmethod
+    def quit():
         exit()
 
     def get_local_sel(self):
@@ -426,7 +423,7 @@ class S3Zilla:
     def delete_local_records(self):
         files = self.get_local_sel()
         if not files:
-            message = "Please select a file(s) to delete"
+            message = 'Please select a file(s) to delete'
             self.set_status_label(message)
         else:
             self.del_local(files)
@@ -434,18 +431,18 @@ class S3Zilla:
     def del_local(self, files_remaining):
         if len(files_remaining) > 0:
             f = files_remaining.pop(0)
-            if not isdir(self.dir + "/" + f):
+            if not isdir(self.dir + '/' + f):
                 try:
-                    remove("%s/%s" % (self.dir, f))
+                    remove('%s/%s' % (self.dir, f))
                 except Exception as err:
-                    self.set_status_label("%s" % err)
+                    self.set_status_label('%s' % err)
                     self.status_label.update_idletasks()
                 self.del_local(files_remaining)
             else:
                 try:
-                    rmtree("%s/%s" % (self.dir, f))
+                    rmtree('%s/%s' % (self.dir, f))
                 except Exception as err:
-                    self.set_status_label("%s" % err)
+                    self.set_status_label('%s' % err)
                     self.status_label.update_idletasks()
                 self.del_local(files_remaining)
         self.deleted = True
@@ -454,12 +451,12 @@ class S3Zilla:
     def delete_s3_records(self):
         removal = ''
         if not self.drp_sel:
-            m = "Please select a bucket..."
+            m = 'Please select a bucket...'
             self.set_status_label(m)
         else:
             removal = self.get_s3_sel()
         if not removal:
-            m = "Please select at least 1 object to delete"
+            m = 'Please select at least 1 object to delete'
             self.set_status_label(m)
         else:
             bucket = self.s3.Bucket(self.drp_sel)
@@ -478,47 +475,52 @@ class S3Zilla:
 
     def refresh_local(self):
         if not self.dir:
-            m = "Use the browse button to select a directory"
+            m = 'Use the browse button to select a directory'
             self.set_status_label(m)
         else:
             self.set_local_browse_label(self.dir)
             self.ex_loc.delete(0, 'end')
-            x = self.dir + "/"
+            x = self.dir + '/'
             d = [f if not isdir(x+f) else f + '/' for f in sorted(listdir(x))]
             self.ex_loc.insert('end', *d)
             if not self.deleted:
-                m = "Hello %s" % getuser()
+                m = self.greeting
             else:
-                m = "FINISHED DELETING"
+                m = 'FINISHED DELETING'
                 self.deleted = False
             self.set_status_label(m)
-            n = "%s files found" % str(self.ex_loc.size())
+            n = '%s files found' % str(self.ex_loc.size())
             self.set_found_local_label(n)
 
     def refresh_s3(self):
         if 'none available' in self.dropdown_data:
-            m = "Please create at least one S3 bucket"
+            m = 'Please create at least one S3 bucket'
             self.set_status_label(m)
         elif not self.drp_sel:
-            m = "Please select a bucket from the drop-down list"
+            m = 'Please select a bucket from the drop-down list'
             self.set_status_label(m)
         else:
             self.ex_s3.delete(0, 'end')
-            self.ex_s3.insert('end', *self.get_bucket_contents())
-            self.set_status_label("Hello %s" % getuser())
-            self.set_s3_bucket_label(self.drp_sel)
-            n = "%s files found" % str(self.ex_s3.size())
-            self.set_found_s3_label(n)
-            self.found_label_s3.update_idletasks()
-            if not self.deleted:
-                m = "Hello %s" % getuser()
+            try:
+                self.ex_s3.insert('end', *self.get_bucket_contents())
+            except Exception:
+                m = 'Unable to find bucket'
+                self.set_status_label(m)
             else:
-                m = "FINISHED DELETING"
-                self.deleted = False
-            self.set_status_label(m)
+                self.set_status_label(self.greeting)
+                self.set_s3_bucket_label(self.drp_sel)
+                n = '%s files found' % str(self.ex_s3.size())
+                self.set_found_s3_label(n)
+                self.found_label_s3.update_idletasks()
+                if not self.deleted:
+                    m = self.greeting
+                else:
+                    m = 'FINISHED DELETING'
+                    self.deleted = False
+                self.set_status_label(m)
 
     def finished(self, incoming_message):
-        d = "FINISHED %s" % incoming_message
+        d = 'FINISHED %s' % incoming_message
         for letter in enumerate(d):
             self.set_status_label(d[0:letter[0] + 1])
             self.status_label.update_idletasks()
@@ -526,39 +528,39 @@ class S3Zilla:
 
     def upload(self):
         if not self.drp_sel or not self.dir:
-            m = "Ensure a local path and S3 bucket are selected"
+            m = 'Ensure a local path and S3 bucket are selected'
             self.set_status_label(m)
         elif not self.get_local_sel():
-            m = "Ensure files are selected to upload"
+            m = 'Ensure files are selected to upload'
             self.set_status_label(m)
         else:
             for selection in self.get_local_sel():
-                file_ = "%s/%s" % (self.dir, selection)
+                file_ = '%s/%s' % (self.dir, selection)
                 if not isdir(file_):
                     self.s3c.upload_file(file_, self.drp_sel, basename(file_))
                 else:
                     zipd = make_archive(file_, 'zip', self.dir, selection)
                     self.s3c.upload_file(zipd, self.drp_sel, basename(zipd))
                     remove(zipd)
-                m = "Uploaded: %s" % selection
+                m = 'Uploaded: %s' % selection
                 self.set_status_label(m)
                 self.status_label.update_idletasks()
             self.refresh_s3()
-            self.finished("UPLOAD")
+            self.finished('UPLOAD')
 
     def download(self):
         if not self.drp_sel or not self.dir:
-            m = "Ensure a file and bucket have been selected"
+            m = 'Ensure a file and bucket have been selected'
             self.set_status_label(m)
         elif not self.get_s3_sel():
-            m = "Ensure files are selected to download"
+            m = 'Ensure files are selected to download'
             self.set_status_label(m)
         else:
             for selection in self.get_s3_sel():
-                file_ = "%s/%s" % (self.dir, selection)
+                file_ = '%s/%s' % (self.dir, selection)
                 self.s3c.download_file(self.drp_sel, selection, file_)
             self.refresh_local()
-            self.finished("DOWNLOAD")
+            self.finished('DOWNLOAD')
 
     def get_bucket_contents(self):
         bucket = self.s3.Bucket(self.drp_sel)
@@ -586,21 +588,21 @@ class S3Zilla:
         self.found_label_s3.config(text=incoming)
 
     def create_bucket(self):
-        self.bucket_name = self.create_bucket_name.get("1.0", END).strip()
+        self.bucket_name = self.create_bucket_name.get('1.0', END).strip()
         if not self.bucket_name:
-            m = "Please enter a new bucket name"
+            m = 'Please enter a new bucket name'
             self.set_status_label(m)
         else:
             pre_exists = False
             try:
                 self.s3.create_bucket(Bucket=self.bucket_name)
-            except ClientError as ce:
+            except ClientError:
                 pre_exists = True
-                m = "Bucket name is already in use. "
-                m += "Choose a different name."
+                m = 'Bucket name is already in use. '
+                m += 'Choose a different name.'
                 self.set_status_label(m)
             if not pre_exists:
-                m = "%s created: restarting..." % self.bucket_name
+                m = '%s created: restarting...' % self.bucket_name
                 self.set_status_label(m)
                 self.status_label.update_idletasks()
                 res = executable
