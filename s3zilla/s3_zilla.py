@@ -425,10 +425,8 @@ class S3Zilla:
             pady=10
         )
 
-        n1 = '%s files found' % str(self.ex_loc.size())
-        self.set_found_local_label(n1)
-        n2 = '%s files found' % str(self.ex_s3.size())
-        self.set_found_s3_label(n2)
+        self.set_found_local_label('%s files found' % str(self.ex_loc.size()))
+        self.set_found_s3_label('%s files found' % str(self.ex_s3.size()))
 
     @staticmethod
     def quit():
@@ -446,25 +444,24 @@ class S3Zilla:
     def delete_local_records(self):
         files = self.get_local_sel()
         if not files:
-            message = 'Please select a file(s) to delete'
-            self.set_status_label(message)
+            self.set_status_label('Please select a file(s) to delete')
         else:
             self.del_local(files)
 
     def del_local(self, files_remaining):
         if len(files_remaining) > 0:
-            f = files_remaining.pop(0)
-            if not isdir(self.dir + '/' + f):
+            current = files_remaining.pop(0)
+            if not isdir(self.dir + '/' + current):
                 try:
-                    remove('%s/%s' % (self.dir, f))
-                except Exception as err:
-                    self.set_status_label('%s' % err)
+                    remove('%s/%s' % (self.dir, current))
+                except Exception as e:
+                    self.set_status_label('%s' % e)
                 self.del_local(files_remaining)
             else:
                 try:
-                    rmtree('%s/%s' % (self.dir, f))
-                except Exception as err:
-                    self.set_status_label('%s' % err)
+                    rmtree('%s/%s' % (self.dir, current))
+                except Exception as e:
+                    self.set_status_label('%s' % e)
                 self.del_local(files_remaining)
         self.deleted = True
         self.refresh_local()
@@ -472,13 +469,11 @@ class S3Zilla:
     def delete_s3_records(self):
         removal = ''
         if not self.drp_sel:
-            m = 'Please select a bucket...'
-            self.set_status_label(m)
+            self.set_status_label('Please select a bucket...')
         else:
             removal = self.get_s3_sel()
         if not removal:
-            m = 'Please select at least 1 object to delete'
-            self.set_status_label(m)
+            self.set_status_label('Please select at least 1 object to delete')
         else:
             bucket = self.s3.Bucket(self.drp_sel)
             for rm in removal:
@@ -500,8 +495,7 @@ class S3Zilla:
 
     def refresh_local(self):
         if not self.dir:
-            m = 'Use the browse button to select a directory'
-            self.set_status_label(m)
+            self.set_status_label('Please select a directory (browse button)')
         else:
             self.set_local_browse_label(self.dir)
             self.ex_loc.delete(0, 'end')
@@ -509,53 +503,48 @@ class S3Zilla:
             d = [f if not isdir(x+f) else f + '/' for f in sorted(listdir(x))]
             self.ex_loc.insert('end', *d)
             if not self.deleted:
-                m = self.greeting
+                msg = self.greeting
             else:
-                m = 'FINISHED DELETING'
+                msg = 'FINISHED DELETING'
                 self.deleted = False
-            self.set_status_label(m)
-            n = '%s files found' % str(self.ex_loc.size())
-            self.set_found_local_label(n)
+            self.set_status_label(msg)
+            files_found = '%s files found' % str(self.ex_loc.size())
+            self.set_found_local_label(files_found)
 
     def refresh_s3(self):
         if 'none available' in self.dropdown_data:
-            m = 'Please create at least one S3 bucket'
-            self.set_status_label(m)
+            self.set_status_label('Please create at least one S3 bucket')
         elif not self.drp_sel:
-            m = 'Please select a bucket from the drop-down list'
-            self.set_status_label(m)
+            self.set_status_label('Select a bucket from the drop-down list')
         else:
             self.ex_s3.delete(0, 'end')
             try:
                 self.ex_s3.insert('end', *self.get_bucket_contents())
             except Exception:
-                m = 'Unable to find bucket'
-                self.set_status_label(m)
+                self.set_status_label('Unable to find bucket')
             else:
                 self.set_status_label(self.greeting)
                 self.set_s3_bucket_label(self.drp_sel)
-                n = '%s files found' % str(self.ex_s3.size())
-                self.set_found_s3_label(n)
+                files_found = '%s files found' % str(self.ex_s3.size())
+                self.set_found_s3_label(files_found)
                 if not self.deleted:
-                    m = self.greeting
+                    msg = self.greeting
                 else:
-                    m = 'FINISHED DELETING'
+                    msg = 'FINISHED DELETING'
                     self.deleted = False
-                self.set_status_label(m)
+                self.set_status_label(msg)
 
     def finish(self, incoming_message):
-        d = 'FINISHED %s' % incoming_message
-        for letter in enumerate(d):
-            self.set_status_label(d[0:letter[0] + 1])
+        marquee = 'FINISHED %s' % incoming_message
+        for letter in enumerate(marquee):
+            self.set_status_label(marquee[0:letter[0] + 1])
             sleep(.04)
 
     def upload(self):
         if not self.drp_sel or not self.dir:
-            m = 'Ensure a local path and S3 bucket are selected'
-            self.set_status_label(m)
+            self.set_status_label('Ensure a path & S3 bucket are selected')
         elif not self.get_local_sel():
-            m = 'Ensure files are selected to upload'
-            self.set_status_label(m)
+            self.set_status_label('Ensure files are selected to upload')
         else:
             for selection in self.get_local_sel():
                 file_ = '%s/%s' % (self.dir, selection)
@@ -565,19 +554,16 @@ class S3Zilla:
                     zipd = make_archive(file_, 'zip', self.dir, selection)
                     self.s3c.upload_file(zipd, self.drp_sel, basename(zipd))
                     remove(zipd)
-                m = 'Uploaded: %s' % selection
-                self.set_status_label(m)
+                self.set_status_label('Uploaded: %s' % selection)
             self.refresh_s3()
             self.finish_thread = Thread(target=self.finish, args=['UPLOAD'])
             self.finish_thread.start()
 
     def download(self):
         if not self.drp_sel or not self.dir:
-            m = 'Ensure a file and bucket have been selected'
-            self.set_status_label(m)
+            self.set_status_label('Ensure a file & bucket are selected')
         elif not self.get_s3_sel():
-            m = 'Ensure files are selected to download'
-            self.set_status_label(m)
+            self.set_status_label('Ensure files are selected to download')
         else:
             for selection in self.get_s3_sel():
                 file_ = '%s/%s' % (self.dir, selection)
@@ -617,20 +603,15 @@ class S3Zilla:
     def create_bucket(self):
         self.bucket_name = self.create_bucket_name.get('1.0', END).strip()
         if not self.bucket_name:
-            m = 'Please enter a new bucket name'
-            self.set_status_label(m)
+            self.set_status_label('Please enter a new bucket name')
         else:
-            pre_exists = False
             try:
                 self.s3.create_bucket(Bucket=self.bucket_name)
             except ClientError:
-                pre_exists = True
-                m = 'Bucket name is already in use. '
-                m += 'Choose a different name.'
-                self.set_status_label(m)
-            if not pre_exists:
-                m = '%s created: restarting...' % self.bucket_name
-                self.set_status_label(m)
+                self.set_status_label('Bucket name is already in use')
+            else:
+                msg = '%s created: restarting...' % self.bucket_name
+                self.set_status_label(msg)
                 self.status_label.update_idletasks()
                 res = executable
                 execl(res, res, *argv)
