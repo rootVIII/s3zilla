@@ -1,6 +1,7 @@
 from tkinter import Menu, StringVar, Label, OptionMenu
 from tkinter import Button, Listbox, Text, E, W, END, PhotoImage
 from tkinter.filedialog import askdirectory
+from tkinter.messagebox import askyesno
 from os import listdir, remove, execl
 from os.path import realpath
 from shutil import rmtree, make_archive
@@ -446,7 +447,8 @@ class S3Zilla:
         if not files:
             self.set_status_label('Please select a file(s) to delete')
         else:
-            self.del_local(files)
+            if askyesno('Delete these files?', ' '.join(files)):
+                self.del_local(files)
 
     def del_local(self, files_remaining):
         if len(files_remaining) > 0:
