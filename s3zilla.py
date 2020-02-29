@@ -1,17 +1,11 @@
 #! /usr/bin/python3
+from s3zilla.s3_zilla import S3Zilla, Thread
 from tkinter import Tk
-from threading import Thread
-from sys import platform
 
 
 def run_gui_thread():
     root = Tk()
-    if platform != 'win32':
-        from s3zilla import S3Zilla
-        S3Zilla(root)
-    else:
-        from s3zilla import S3ZillaWin10
-        S3ZillaWin10(root)
+    S3Zilla(root)
     root.mainloop()
 
 
