@@ -447,7 +447,9 @@ class S3Zilla:
         if not files:
             self.set_status_label('Please select a file(s) to delete')
         else:
-            if askyesno('Delete these files?', ' '.join(files)):
+            title = 'DELETE FROM LOCAL FILE SYSTEM?'
+            msg = 'The following will be removed:\n\n%s' % '\n'.join(files)
+            if askyesno(title, msg):
                 self.del_local(files)
 
     def del_local(self, files_remaining):
@@ -469,7 +471,7 @@ class S3Zilla:
         self.refresh_local()
 
     def delete_s3_records(self):
-        removal = ''
+        removal = []
         if not self.drp_sel:
             self.set_status_label('Please select a bucket...')
         else:
@@ -477,15 +479,18 @@ class S3Zilla:
         if not removal:
             self.set_status_label('Please select at least 1 object to delete')
         else:
-            bucket = self.s3.Bucket(self.drp_sel)
-            for rm in removal:
-                for k in bucket.objects.all():
-                    if k.key != rm:
-                        continue
-                    k.delete()
-                    break
-            self.deleted = True
-            self.refresh_s3()
+            title = 'DELETE FROM AMAZON S3?'
+            msg = 'The following will be removed:\n\n%s' % '\n'.join(removal)
+            if askyesno(title, msg):
+                bucket = self.s3.Bucket(self.drp_sel)
+                for rm in removal:
+                    for k in bucket.objects.all():
+                        if k.key != rm:
+                            continue
+                        k.delete()
+                        break
+                self.deleted = True
+                self.refresh_s3()
 
     def load_dir(self):
         self.dir = askdirectory()
