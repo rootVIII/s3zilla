@@ -1,7 +1,7 @@
 # s3zilla
 #### an S3 file-transfer client for Linux & Windows, developed in Python
 
-<img src="https://github.com/rootVIII/s3zilla/blob/master/sc.png" alt="ex" height="800" width="950">
+<img src="https://github.com/rootVIII/s3zilla/blob/master/sc.png" alt="ex" height="400" width="400">
 <hr>
 
 
@@ -42,6 +42,6 @@ A trailing / after a name in the file explorer denotes a directory.
 Multiple files can be selected at once for a single upload or download.
 <hr>
 
-This was developed and tested on Ubuntu 18.04. Also tested on Windows 10
+This was developed and tested on Ubuntu 18.04 and Kubuntu 18.04 (also tested on Windows 10).
 
-<b>Author: James Loye Colley  2019</b>
+<b>Author: James Loye Colley  2019-2020</b>
