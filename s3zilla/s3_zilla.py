@@ -1,15 +1,15 @@
+from getpass import getuser
+from threading import Thread
+from time import sleep
 from tkinter import Menu, StringVar, Label, OptionMenu
 from tkinter import Button, Listbox, Text, E, W, END, PhotoImage
 from tkinter.filedialog import askdirectory
 from tkinter.messagebox import askyesno
 from os import listdir, remove, execl
-from os.path import realpath
+from os.path import realpath, isdir, basename
 from shutil import rmtree, make_archive
-from getpass import getuser
-from os.path import isdir, basename
 from sys import executable, argv, platform
-from time import sleep
-from threading import Thread
+
 
 try:
     import boto3
@@ -18,9 +18,9 @@ except Exception as err:
     print('%s: %s' % (type(err).__name__, str(err)))
     exit(1)
 
-# rootVIII
+
+# rootVIII - s3zilla - Amazon S3 File XFER Client
 # pycodestyle validated
-# last update: 27FEB2020
 
 
 class S3Zilla:
@@ -426,8 +426,8 @@ class S3Zilla:
             pady=10
         )
 
-        self.set_found_local_label('%s files found' % str(self.ex_loc.size()))
-        self.set_found_s3_label('%s files found' % str(self.ex_s3.size()))
+        self.set_found_local_label('%d files found' % self.ex_loc.size())
+        self.set_found_s3_label('%d files found' % self.ex_s3.size())
 
     @staticmethod
     def quit():
@@ -515,7 +515,7 @@ class S3Zilla:
                 msg = 'FINISHED DELETING'
                 self.deleted = False
             self.set_status_label(msg)
-            files_found = '%s files found' % str(self.ex_loc.size())
+            files_found = '%d files found' % self.ex_loc.size()
             self.set_found_local_label(files_found)
 
     def refresh_s3(self):
@@ -532,7 +532,7 @@ class S3Zilla:
             else:
                 self.set_status_label(self.greeting)
                 self.set_s3_bucket_label(self.drp_sel)
-                files_found = '%s files found' % str(self.ex_s3.size())
+                files_found = '%d files found' % self.ex_s3.size()
                 self.set_found_s3_label(files_found)
                 if not self.deleted:
                     msg = self.greeting
