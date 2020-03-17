@@ -20,7 +20,10 @@ setup(
     },
     data_files=[
         (
-            's3zilla', ['s3zilla/icon*']
+            's3zilla', [
+                's3zilla/icon.png',
+                's3zilla/icon.ico'
+            ]
         )
     ]
 )
