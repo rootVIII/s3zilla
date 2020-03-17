@@ -16,23 +16,6 @@ Additional Linux Requirements: sudo apt-get install python3-tk
   </code>
 </pre>
 <br>
-
-<pre>
-  <code>
-Download, navigate to project root, and run the following command
-- ensure pip points to Python3 or use pip3 depending on your setup
-
-pip install -e .
-
-or install directly from Git:
-
-pip install git+https://github.com/rootVIII/s3zilla
-
-Then run the command from any location in your shell: s3zilla
-
-Or run as a normal Python script: python s3zilla.py or python3 s3zilla.py
-  </code>
-</pre>
 <br>
 See the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">documentation</a>
 for setting up your S3 API keys, especially the
