@@ -1,3 +1,0 @@
-[console_scripts]
-s3zilla = s3zilla.s3_zilla:main
-
