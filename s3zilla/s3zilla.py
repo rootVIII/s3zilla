@@ -8,6 +8,7 @@ from tkinter.messagebox import askyesno
 from os import listdir, remove, execl
 from os.path import realpath, isdir, basename
 from shutil import rmtree, make_archive
+from subprocess import Popen, PIPE
 from sys import executable, argv, platform
 
 
@@ -47,7 +48,19 @@ class S3Zilla:
         self.master.title('Amazon S3 File Transfer Client')
         self.master.configure(bg=black)
         if platform != 'win32':
-            self.master.geometry('695x700')
+            session = Popen(
+                'echo $DESKTOP_SESSION',
+                shell=True, stdout=PIPE,
+                stderr=PIPE).communicate()[0].decode().strip()
+            desktop = {
+                'plasma': '695x700',
+                'ubuntu': '625x700'
+            }
+            if session not in desktop:
+                print('Desktop environment %s not found.' % session)
+                self.master.geometry(desktop['ubuntu'])
+            else:
+                self.master.geometry(desktop[session])
             self.icon = PhotoImage(file=rpath + 'icon.png')
             master.iconphoto(False, self.icon)
         else:
@@ -381,7 +394,7 @@ class S3Zilla:
                 master,
                 fg=cyan,
                 bg=black,
-                width=18,
+                width=15,
                 height=1
             )
             self.create_bucket_button = Button(
