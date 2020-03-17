@@ -26,7 +26,7 @@ pip install -e .
 
 or install directly from Git:
 
-pip install git+https://github.com/rootVIII/tube_dream
+pip install git+https://github.com/rootVIII/s3zilla
 
 Then run the command from any location in your shell: s3zilla
 
