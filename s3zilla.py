@@ -9,7 +9,7 @@ def run_gui_thread():
     root.mainloop()
 
 
-def main():
+if __name__ == "__main__":
     try:
         thread = Thread(target=run_gui_thread)
         thread.daemon = True
@@ -18,7 +18,3 @@ def main():
     except KeyboardInterrupt:
         pass
     print('\nExiting S3Zilla')
-
-
-if __name__ == "__main__":
-    main()
