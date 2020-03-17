@@ -20,8 +20,8 @@ except Exception as err:
     exit(1)
 
 
-# rootVIII - s3zilla - Amazon S3 File XFER Client
-# pycodestyle validated
+# rootVIII - s3zilla - Amazon S3 File Transfer Client
+# 2019-2020
 
 
 class S3Zilla:
