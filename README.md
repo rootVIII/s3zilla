@@ -1,28 +1,39 @@
 # s3zilla
-#### an S3 file-transfer client for Linux & Windows, developed in Python
+#### A cross-platform S3 file-transfer client, developed in Python
 
 <img src="https://github.com/rootVIII/s3zilla/blob/master/sc.png" alt="ex" height="400" width="400">
 <hr>
 
+<pre>
+  <code>
+requirements:
 
-<code>python s3zilla.py</code>
+python3
 
-<code>./s3zilla.py</code>
+pip install boto3
 
+Additional Linux Requirements: sudo apt-get install python3-tk
+  </code>
+</pre>
 <br>
-<strong>Python3 is required</strong>
 
+<pre>
+  <code>
+Download, navigate to project root, and run the following command
+- ensure pip points to Python3 or use pip3 depending on your setup
 
-boto3 is also required:  <code>pip install boto3</code>
+pip install -e .
 
+or install directly from Git:
+
+pip install git+https://github.com/rootVIII/tube_dream
+
+Then run the command from any location in your shell: s3zilla
+
+Or run as a normal Python script: python s3zilla.py or python3 s3zilla.py
+  </code>
+</pre>
 <br>
-<strong>Additional Linux Requirements:</strong>
-
-<code>sudo apt-get install python3-tk</code>
-
-<code>sudo apt-get install libssl-dev</code>
-
-
 See the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">documentation</a>
 for setting up your S3 API keys, especially the
 <i>Configuration Settings and Precedence</i> section.
