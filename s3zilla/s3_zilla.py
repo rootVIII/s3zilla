@@ -1,5 +1,5 @@
 #! /usr/bin/python3
-from s3zilla.s3zilla import S3Zilla, Thread
+from s3zilla import S3Zilla, Thread
 from tkinter import Tk
 
 
