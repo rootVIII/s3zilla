@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="s3zilla",
-    version="1.0.0",
+    version="1.0.1",
     packages=["s3zilla"],
     package_data={
         's3zilla': ['s3zilla/*']
