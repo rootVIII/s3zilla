@@ -1,4 +1,5 @@
 from getpass import getuser
+from os import environ
 from threading import Thread
 from time import sleep
 from tkinter import Menu, StringVar, Label, OptionMenu
@@ -8,7 +9,6 @@ from tkinter.messagebox import askyesno
 from os import listdir, remove, execl
 from os.path import realpath, isdir, basename
 from shutil import rmtree, make_archive
-from subprocess import Popen, PIPE
 from sys import executable, argv, platform
 
 
@@ -48,24 +48,27 @@ class S3Zilla:
         self.master.title('Amazon S3 File Transfer Client')
         self.master.configure(bg=black)
         if platform != 'win32':
-            session = Popen(
-                'echo $DESKTOP_SESSION',
-                shell=True, stdout=PIPE,
-                stderr=PIPE).communicate()[0].decode().strip()
             desktop = {
                 'plasma': '695x700',
                 'ubuntu': '625x700'
             }
-            if session not in desktop:
-                print('Desktop environment %s not found.' % session)
-                self.master.geometry(desktop['ubuntu'])
+            env = environ.get('DESKTOP_SESSION')
+            if env is None or env not in desktop or env == 'ubunutu':
+                self.master.maxsize('625', '700')
+                self.master.minsize('625', '550')
             else:
-                self.master.geometry(desktop[session])
+                self.master.maxsize('695', '700')
+                self.master.minsize('695', '550')
+
+            self.master.geometry(desktop[env])
             self.icon = PhotoImage(file=rpath + 'icon.png')
             master.iconphoto(False, self.icon)
+
         else:
             self.master.geometry('485x700')
             self.master.iconbitmap(rpath + 'icon.ico')
+            self.master.maxsize('485', '700')
+            self.master.minsize('485', '700')
         menu = Menu(self.master)
         menu.config(
             background=black,
@@ -439,6 +442,10 @@ class S3Zilla:
             pady=10
         )
 
+        self.master.grid_columnconfigure(0, weight=1)
+        self.master.grid_columnconfigure(1, weight=1)
+        self.master.grid_rowconfigure(5, weight=1)
+
         self.set_found_local_label('%d files found' % self.ex_loc.size())
         self.set_found_s3_label('%d files found' % self.ex_s3.size())
 
@@ -507,7 +514,10 @@ class S3Zilla:
 
     def load_dir(self):
         self.dir = askdirectory()
-        if not isdir(self.dir):
+        if not self.dir:
+            self.set_status_label('Ensure a directory is selected')
+            self.dir = ''
+        elif not isdir(self.dir):
             self.set_status_label('Ensure a directory is selected')
             self.dir = ''
         else:

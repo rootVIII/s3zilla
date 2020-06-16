@@ -1,4 +1,4 @@
-from s3zilla.s3zilla import S3Zilla, Thread
+from s3zilla.s3zilla import S3Zilla
 from tkinter import Tk
 
 
@@ -10,10 +10,6 @@ def run_gui_thread():
 
 if __name__ == "__main__":
     try:
-        thread = Thread(target=run_gui_thread)
-        thread.daemon = True
-        thread.start()
-        thread.join()
+        run_gui_thread()
     except KeyboardInterrupt:
         pass
-    print('\nExiting S3Zilla')
