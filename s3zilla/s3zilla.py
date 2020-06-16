@@ -65,10 +65,10 @@ class S3Zilla:
             master.iconphoto(False, self.icon)
 
         else:
-            self.master.geometry('485x700')
+            self.master.geometry('485x600')
             self.master.iconbitmap(rpath + 'icon.ico')
             self.master.maxsize('485', '700')
-            self.master.minsize('485', '700')
+            self.master.minsize('485', '550')
         menu = Menu(self.master)
         menu.config(
             background=black,
