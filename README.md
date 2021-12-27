@@ -1,5 +1,5 @@
 # s3zilla
-#### An S3 file-transfer client, developed in Python (Ubuntu/Kubuntu, Windows)
+#### An S3 file-transfer client, developed in Python (for Ubuntu/Kubuntu and Windows)
 
 <img src="https://github.com/rootVIII/s3zilla/blob/master/sc.png" alt="ex" height="400" width="400">
 <hr>
