@@ -26,13 +26,8 @@ except Exception as err:
 
 class S3Zilla:
     def __init__(self, master):
-        try:
-            self.s3 = boto3.resource('s3')
-            self.s3c = boto3.client('s3')
-        except Exception as err:
-            print('%s: %s' % (type(err).__name__, str(err)))
-            exit(1)
-
+        self.s3 = boto3.resource('s3')
+        self.s3c = boto3.client('s3')
         light_gray = '#D9D9D9',
         blue = '#181B42',
         red = '#FF0000',
@@ -78,7 +73,7 @@ class S3Zilla:
         file = Menu(menu)
         file.add_command(
             label='Exit',
-            command=self.quit
+            command=self.quit_app
         )
         menu.add_cascade(
             label='File',
@@ -450,7 +445,7 @@ class S3Zilla:
         self.set_found_s3_label('%d files found' % self.ex_s3.size())
 
     @staticmethod
-    def quit():
+    def quit_app():
         exit()
 
     def get_local_sel(self):
