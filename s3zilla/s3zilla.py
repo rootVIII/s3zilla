@@ -28,10 +28,10 @@ class S3Zilla:
     def __init__(self, master):
         self.s3 = boto3.resource('s3')
         self.s3c = boto3.client('s3')
-        light_gray = '#D9D9D9',
-        blue = '#181B42',
-        red = '#FF0000',
-        black = '#000000',
+        light_gray = '#D9D9D9'
+        blue = '#181B42'
+        red = '#FF0000'
+        black = '#000000'
         cyan = '#80DFFF'
         bold = 'Helvetica 10 bold underline'
         normal = 'Helvetica 10'
@@ -92,7 +92,10 @@ class S3Zilla:
         self.dir, self.drp_sel, self.bucket_name = ['' for _ in range(3)]
         self.folder_path = StringVar()
         self.dropdown = StringVar()
-        self.dropdown_data = self.populate_dropdown()
+        try:
+            self.dropdown_data = self.populate_dropdown()
+        except Exception:
+            self.dropdown_data = []
         if not self.dropdown_data:
             self.dropdown_data = ['none available']
         self.deleted = False
