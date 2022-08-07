@@ -95,8 +95,6 @@ class S3Zilla:
         try:
             self.dropdown_data = self.populate_dropdown()
         except Exception:
-            self.dropdown_data = []
-        if not self.dropdown_data:
             self.dropdown_data = ['none available']
         self.deleted = False
         self.local_sel, self.s3_sel = ([] for _ in range(2))
