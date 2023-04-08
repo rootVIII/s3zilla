@@ -1,12 +1,15 @@
 # MIT License Copyright (c) 2019-2023 rootVIII
 from getpass import getuser
+from html import unescape
+from os import listdir, remove
+from os.path import realpath, isdir, basename
+from shutil import rmtree
 from tkinter import Menu, StringVar, Label, OptionMenu
 from tkinter import Button, Listbox, E, W
 from tkinter.filedialog import askdirectory
 from tkinter.messagebox import askyesno
-from os import listdir, remove
-from os.path import realpath, isdir, basename
-from shutil import rmtree
+
+
 from src.s3_client import S3Client
 from src.utils import folder_walk
 
@@ -28,10 +31,10 @@ class App(S3Client):
         self.master.title('Amazon S3 File Transfer Client')
         self.master.configure(bg=black)
 
-        self.master.geometry('485x600')
+        self.master.geometry('600x500')
         self.master.iconbitmap(f'{realpath(__file__)[:-len(basename(__file__))]}icon.ico')
-        self.master.maxsize('485', '700')
-        self.master.minsize('485', '550')
+        self.master.maxsize('1400', '700')
+        self.master.minsize('600', '500')
 
         menu = Menu(self.master)
         menu.config(background=black, fg=light_gray)
@@ -99,25 +102,27 @@ class App(S3Client):
                                    highlightcolor=black, selectmode='multiple')
         self.s3_explorer.grid(row=5, column=1, sticky=E+W, padx=10, pady=10)
 
-        self.upload_button = Button(master, fg=light_gray, bg=blue, text='Upload ->',
-                                    width=14, highlightbackground=black,
-                                    highlightthickness=2, command=self.upload)
-        self.upload_button.grid(row=6, column=0, sticky=E, padx=10, pady=10)
-
-        self.download_button = Button(master, fg=light_gray, bg=blue, text='<- Download',
-                                      width=14,  highlightbackground=black,
-                                      highlightthickness=2, command=self.download)
-        self.download_button.grid(row=6, column=1, sticky=W, padx=10, pady=10)
-
-        self.delete_local = Button(master, fg=light_gray, bg=blue, text='DELETE',
-                                   width=14, highlightbackground=red, activebackground=red,
+        self.upload_button = Button(master, fg=cyan, bg=blue,
+                                    text=unescape('&emsp; &thinsp;▶️'),
+                                    width=3, highlightbackground=black,
+                                    command=self.upload)
+        self.upload_button.grid(row=6, column=0, sticky=E, padx=120, pady=10)
+        self.delete_local = Button(master, fg=red, bg=blue, text=unescape('❌'),
+                                   width=3, highlightbackground=red, activebackground=red,
                                    command=self.delete_local_records)
-        self.delete_local.grid(row=6, column=0, sticky=W, padx=10, pady=10)
+        self.delete_local.grid(row=6, column=0, sticky=W, padx=120)
 
-        self.delete_s3 = Button(master, fg=light_gray, bg=blue, text='DELETE',
-                                width=14, highlightbackground=red, activebackground=red,
+        self.download_button = Button(master, fg=cyan, bg=blue,
+                                      text=unescape('&emsp;&thinsp;◀️'),
+                                      width=3,  highlightbackground=black,
+                                      command=self.download)
+        self.download_button.grid(row=6, column=1, sticky=W, padx=120, pady=10)
+        self.delete_s3 = Button(master, fg=red, bg=blue, text=unescape('❌'),
+                                width=3, highlightbackground=red, activebackground=red,
                                 command=self.delete_s3_records)
-        self.delete_s3.grid(row=6, column=1, sticky=E, padx=10, pady=10)
+        self.delete_s3.grid(row=6, column=1, sticky=E, padx=120, pady=10)
+
+
 
         self.found_label_local = Label(master, fg=light_gray, bg=black,
                                        text='found local', width=16)
@@ -155,6 +160,18 @@ class App(S3Client):
     def set_found_s3_label(self, text):
         self.found_label_s3.config(text=text)
         self.found_label_s3.update_idletasks()
+
+    @staticmethod
+    def check_file_path_len(text):
+        if len(text) < 60:
+            return text
+        return f'.../{[item.strip() for item in text.split("/") if item.strip()][-1]}'[:60]
+
+    def set_local_browse_label(self, text):
+        self.browse_label.config(text=self.check_file_path_len(text))
+
+    def set_s3_bucket_label(self, text):
+        self.bucket_label.config(text=self.check_file_path_len(text))
 
     def clear_status(self):
         self.status_label.config(text='')
@@ -285,9 +302,3 @@ class App(S3Client):
 
     def get_bucket_contents(self):
         return self.list_bucket_contents(self.chosen_bucket)
-
-    def set_local_browse_label(self, incoming):
-        self.browse_label.config(text=incoming)
-
-    def set_s3_bucket_label(self, incoming):
-        self.bucket_label.config(text=incoming)
