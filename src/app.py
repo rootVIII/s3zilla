@@ -21,7 +21,7 @@ except Exception as err:
 
 
 # rootVIII - s3zilla - Amazon S3 File Transfer Client
-# 2019-2020
+# 2019-2023
 
 
 class S3Zilla:
