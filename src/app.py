@@ -14,9 +14,6 @@ from src.utils import folder_walk
 class App(S3Client):
     def __init__(self, master):
         S3Client.__init__(self)
-        # self.s3 = boto3.resource('s3')
-        # self.s3c = boto3.client('s3')
-
         light_gray = '#D9D9D9'
         blue = '#181B42'
         red = '#FF0000'
@@ -95,11 +92,11 @@ class App(S3Client):
         self.refresh_btn_s3.grid(row=3, column=1, sticky=E+W, padx=50, pady=10)
 
         self.local_explorer = Listbox(master, fg=cyan, bg=black, width=36, height=18,
-                              highlightcolor=black, selectmode='multiple')
+                                      highlightcolor=black, selectmode='multiple')
         self.local_explorer.grid(row=5, column=0, sticky=E+W, padx=10, pady=10)
 
         self.s3_explorer = Listbox(master, fg=cyan, bg=black, width=36, height=18,
-                             highlightcolor=black, selectmode='multiple')
+                                   highlightcolor=black, selectmode='multiple')
         self.s3_explorer.grid(row=5, column=1, sticky=E+W, padx=10, pady=10)
 
         self.upload_button = Button(master, fg=light_gray, bg=blue, text='Upload ->',
@@ -117,9 +114,9 @@ class App(S3Client):
                                    command=self.delete_local_records)
         self.delete_local.grid(row=6, column=0, sticky=W, padx=10, pady=10)
 
-        self.delete_s3 = Button( master, fg=light_gray, bg=blue, text='DELETE',
-                                 width=14, highlightbackground=red, activebackground=red,
-                                 command=self.delete_s3_records)
+        self.delete_s3 = Button(master, fg=light_gray, bg=blue, text='DELETE',
+                                width=14, highlightbackground=red, activebackground=red,
+                                command=self.delete_s3_records)
         self.delete_s3.grid(row=6, column=1, sticky=E, padx=10, pady=10)
 
         self.found_label_local = Label(master, fg=light_gray, bg=black,
@@ -206,22 +203,22 @@ class App(S3Client):
     def delete_local_records(self):
         files = self.get_local_sel()
         if not files:
-            self.set_status('Please select a file(s) to delete')
+            self.set_status('Please select a file(s) to delete', clear=True)
         else:
-            title = 'Delete the below files from the local file-system?'
+            title = 'Delete local files?'
             if askyesno(title, '\n'.join(files)):
                 self.local_delete(files)
 
     def delete_s3_records(self):
         to_remove = []
         if not self.chosen_bucket:
-            self.set_status('Please select a bucket...')
+            self.set_status('Please select a bucket...', clear=True)
         else:
             to_remove = self.get_s3_sel()
         if not to_remove:
-            self.set_status('Please select at least 1 object to delete')
+            self.set_status('Please select at least 1 object to delete', clear=True)
         else:
-            title = 'Delete the below objects from S3?'
+            title = 'Delete S3 Objects?'
             if askyesno(title, '\n'.join(to_remove)):
                 for obj_name in to_remove:
                     self.delete_obj(self.chosen_bucket, obj_name)
@@ -232,22 +229,22 @@ class App(S3Client):
     def load_dir(self):
         self.chosen_directory = askdirectory()
         if not self.chosen_directory or not isdir(self.chosen_directory):
-            self.set_status('Ensure a directory is selected')
+            self.set_status('Ensure a directory is selected', clear=True)
             self.chosen_directory = ''
         else:
             self.set_local_browse_label(self.chosen_directory)
 
     def refresh_s3(self):
         if 'none available' in self.available_buckets:
-            self.set_status('Please create at least one S3 bucket')
+            self.set_status('Please create at least one S3 bucket', clear=True)
         elif not self.chosen_bucket:
-            self.set_status('Please select a bucket from the drop-down list')
+            self.set_status('Please select a bucket from the drop-down list', clear=True)
         else:
             self.s3_explorer.delete(0, 'end')
             try:
                 self.s3_explorer.insert('end', *self.get_bucket_contents())
             except Exception:
-                self.set_status('Unable to find bucket')
+                self.set_status('Unable to find bucket', clear=True)
             else:
                 self.set_s3_bucket_label(self.chosen_bucket)
                 file_count = self.s3_explorer.size()
@@ -256,19 +253,20 @@ class App(S3Client):
 
     def upload(self):
         if not self.chosen_bucket or not self.chosen_directory:
-            self.set_status('Ensure a path & S3 bucket are selected')
+            self.set_status('Ensure a path & S3 bucket are selected', clear=True)
         elif not self.get_local_sel():
-            self.set_status('Ensure files are selected to upload')
+            self.set_status('Ensure files are selected to upload', clear=True)
         else:
             self.set_status('Uploading...')
             for selection in self.get_local_sel():
                 file_path = f'{self.chosen_directory}/{selection}'
                 if not isdir(file_path):
-                    # self.upload_s3(file_path, self.chosen_bucket, basename(file_path))
-                    print(file_path)
-                else:
-                    for folder in folder_walk(file_path, []):
-                        print(folder)
+                    self.upload_s3(file_path, self.chosen_bucket, basename(file_path))
+                    continue
+                for file_name in folder_walk(file_path, []):
+                    if not isdir(file_name):
+                        self.upload_s3(file_name, self.chosen_bucket,
+                                       file_name[len(self.chosen_directory) + 1:])
 
             self.refresh_s3()
             self.set_status('Finished uploading...', clear=True)
