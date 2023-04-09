@@ -31,7 +31,7 @@ class App(S3Client):
         self.finish_thread = None
         self.greeting = f'Hello {getuser()}'
         self.master = master
-        self.master.title('Amazon S3 File Transfer Client')
+        self.master.title('S3 File Transfer Client')
         self.master.configure(bg=black)
 
         self.src = realpath(__file__)[:-len(basename(__file__))]
@@ -119,20 +119,34 @@ class App(S3Client):
                                     width=3, highlightbackground=black,
                                     command=self.upload)
         self.upload_button.grid(row=6, column=0, sticky=E, padx=120, pady=10)
+
         self.delete_local = Button(master, fg=red, bg=blue, text=unescape('❌'),
                                    width=3, highlightbackground=red, activebackground=red,
                                    command=self.delete_local_records)
-        self.delete_local.grid(row=6, column=0, sticky=W, padx=120)
+        self.delete_local.grid(row=6, column=0, sticky=W, padx=114)
 
         self.download_button = Button(master, fg=cyan, bg=blue,
                                       text=unescape('&emsp;&thinsp;◀️'),
                                       width=3,  highlightbackground=black,
                                       command=self.download)
         self.download_button.grid(row=6, column=1, sticky=W, padx=120, pady=10)
+
+
+
+
+
+
+
         self.delete_s3 = Button(master, fg=red, bg=blue, text=unescape('❌'),
                                 width=3, highlightbackground=red, activebackground=red,
                                 command=self.delete_s3_records)
-        self.delete_s3.grid(row=6, column=1, sticky=E, padx=120, pady=10)
+        self.delete_s3.grid(row=6, column=1, sticky=E, padx=123, pady=10)
+
+
+
+
+
+
 
         self.found_label_local = Label(master, fg=light_gray, bg=black,
                                        text='found local', width=16)
