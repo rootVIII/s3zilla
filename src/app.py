@@ -19,6 +19,7 @@ class App(S3Client):
         S3Client.__init__(self)
         light_gray = '#D9D9D9'
         blue = '#181B42'
+        green = '#33CC00'
         red = '#FF0000'
         black = '#000000'
         cyan = '#80DFFF'
@@ -32,10 +33,10 @@ class App(S3Client):
         self.master.configure(bg=black)
 
         self.src = realpath(__file__)[:-len(basename(__file__))]
-        self.master.geometry('600x500')
+        self.master.geometry('600x700')
         self.master.iconbitmap(f'{self.src}icon.ico')
-        self.master.maxsize('1400', '700')
-        self.master.minsize('600', '500')
+        self.master.maxsize('600', '700')
+        self.master.minsize('600', '700')
 
         menu = Menu(self.master)
         menu.config(background=black, fg=light_gray)
@@ -60,42 +61,40 @@ class App(S3Client):
         except Exception:
             self.available_buckets = ['none available']
 
-        self.local_label = Label(master, fg=light_gray, bg=black, font=bold,
+        self.local_label = Label(master, fg=green, bg=black, font=bold,
                                  width=24, text='LOCAL')
         self.local_label.grid(row=0, column=0, sticky=E+W, padx=10, pady=20)
 
-        self.s3_label = Label(master, fg=light_gray, bg=black, font=bold,
+        self.s3_label = Label(master, fg=green, bg=black, font=bold,
                               width=24, text='AWS S3')
         self.s3_label.grid(row=0, column=1, sticky=E+W, padx=10, pady=20)
 
-        self.dropdown_box = OptionMenu(master, self.dropdown, *self.available_buckets,
-                                       command=self.set_chosen_bucket)
-        self.dropdown_box.configure(fg=light_gray, bg=blue, width=16,
-                                    highlightbackground=black, highlightthickness=2)
-        self.dropdown_box.grid(row=1, column=1, sticky=E+W, padx=52, pady=10)
-
         self.browse_button = Button(master, fg=light_gray, bg=blue, text='Browse',
-                                    width=16, highlightbackground=black,
+                                    width=34, highlightbackground=black,
                                     highlightthickness=2, command=self.load_dir)
-        self.browse_button.grid(row=1, column=0, sticky=E+W, padx=52, pady=10)
+        self.browse_button.grid(row=1, column=0, sticky=W, padx=10, pady=10)
 
         self.refresh_btn_local = Button(master, fg=light_gray, bg=black,
                                         image=self.refresh_img, width=20,
-                                        borderwidth=0,
-                                        highlightcolor=black,
+                                        borderwidth=0, highlightcolor=black,
                                         highlightbackground=black,
                                         highlightthickness=0,
                                         command=self.refresh_local)
-        self.refresh_btn_local.grid(row=2, column=0)
+        self.refresh_btn_local.grid(row=1, sticky=E, column=0, padx=9)
+
+        self.dropdown_box = OptionMenu(master, self.dropdown, *self.available_buckets,
+                                       command=self.set_chosen_bucket)
+        self.dropdown_box.configure(fg=light_gray, bg=blue, width=36,
+                                    highlightbackground=black, highlightthickness=2)
+        self.dropdown_box.grid(row=1, column=1, sticky=W, padx=10, pady=10)
 
         self.refresh_btn_s3 = Button(master, fg=light_gray, bg=black,
                                      image=self.refresh_img, width=20,
-                                     borderwidth=0,
-                                     highlightcolor=black,
+                                     borderwidth=0, highlightcolor=black,
                                      highlightbackground=black,
                                      highlightthickness=0,
                                      command=self.refresh_s3)
-        self.refresh_btn_s3.grid(row=2, column=1)
+        self.refresh_btn_s3.grid(row=1, sticky=E, column=1, padx=10)
 
         self.browse_label = Label(master, fg=light_gray, bg=black, width=24,
                                   font=normal, text='No directory selected')
@@ -105,11 +104,11 @@ class App(S3Client):
                                   font=normal, text='No bucket selected')
         self.bucket_label.grid(row=3, column=1, sticky=E+W, padx=10, pady=10)
 
-        self.local_explorer = Listbox(master, fg=cyan, bg=black, width=36, height=18,
+        self.local_explorer = Listbox(master, fg=cyan, bg=black, width=36, height=24,
                                       highlightcolor=black, selectmode='multiple')
         self.local_explorer.grid(row=5, column=0, sticky=E+W, padx=10, pady=10)
 
-        self.s3_explorer = Listbox(master, fg=cyan, bg=black, width=36, height=18,
+        self.s3_explorer = Listbox(master, fg=cyan, bg=black, width=36, height=24,
                                    highlightcolor=black, selectmode='multiple')
         self.s3_explorer.grid(row=5, column=1, sticky=E+W, padx=10, pady=10)
 
@@ -196,7 +195,7 @@ class App(S3Client):
 
     def refresh_local(self):
         if not self.chosen_directory:
-            self.set_status('Please select a directory (browse button)')
+            self.set_status('Please select a directory (browse button)', clear=True)
             self.chosen_directory = ''
         else:
             self.set_local_browse_label(self.chosen_directory)
@@ -304,8 +303,9 @@ class App(S3Client):
             self.set_status('Ensure files are selected to download', clear=True)
         else:
             for selection in self.get_s3_sel():
-                file_name = f'{self.chosen_directory}\\{selection}'
-                self.download_s3(self.chosen_bucket, selection, file_name)
+                file_name = f'{self.chosen_directory}/{selection}'
+                print(file_name)
+                # self.download_s3(self.chosen_bucket, selection, file_name)
             self.refresh_local()
             self.set_status('Downloaded...', clear=True)
 
