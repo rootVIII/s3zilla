@@ -24,6 +24,7 @@ class App(S3Client):
         red = '#FF0000'
         black = '#000000'
         cyan = '#80DFFF'
+        magenta = '#FF00FF'
         bold = 'Helvetica 10 bold'
         normal = 'Helvetica 10'
 
@@ -141,7 +142,7 @@ class App(S3Client):
                                     text='found s3', width=16)
         self.found_label_s3.grid(row=7, column=1, sticky=E+W, padx=10, pady=10)
 
-        self.status_label = Label(master, fg=light_gray, bg=black,
+        self.status_label = Label(master, fg=magenta, bg=black,
                                   text=self.greeting, width=8)
         self.status_label.grid(row=8, column=0, sticky=E + W, padx=10, pady=10)
 
@@ -159,7 +160,7 @@ class App(S3Client):
     def set_status(self, text: str, clear: bool = False):
         self.status_label.config(text=text)
         if clear:
-            self.status_label.after(3000, self.clear_status)
+            self.status_label.after(3500, self.clear_status)
         self.status_label.update_idletasks()
 
     def set_found_local_label(self, text: str):
