@@ -3,6 +3,7 @@ from getpass import getuser
 from html import unescape
 from os import listdir, remove
 from os.path import realpath, isdir, basename
+from pathlib import Path
 from shutil import rmtree
 from tkinter import Menu, StringVar, Label, OptionMenu
 from tkinter import Button, Listbox, E, W, PhotoImage
@@ -208,6 +209,7 @@ class App(S3Client):
             self.local_explorer.insert('end', *files)
             files_found = f'{self.local_explorer.size()} files found'
             self.set_found_local_label(files_found)
+            self.set_status('')
 
     def local_delete(self, files: list):
         msg = 'Finished deleting'
@@ -277,6 +279,7 @@ class App(S3Client):
                 file_count = self.s3_explorer.size()
                 files_found = f'{file_count} file-object{"s" if file_count != 1 else ""} found'
                 self.set_found_s3_label(files_found)
+                self.set_status('')
 
     def upload(self):
         if not self.chosen_bucket or not self.chosen_directory:
@@ -305,8 +308,15 @@ class App(S3Client):
             self.set_status('Ensure files are selected to download', clear=True)
         else:
             for selection in self.get_s3_sel():
-                file_name = f'{self.chosen_directory}/{selection}'
-                print(file_name)
-                # TODO: self.download_s3(self.chosen_bucket, selection, file_name)
+                file_path = f'{self.chosen_directory}/{selection}'
+                folder = '/'.join(folder for folder in file_path.split('/')[:-1] if folder.strip())
+
+                try:
+                    Path(folder).mkdir(parents=True, exist_ok=True)
+                    self.download_s3(self.chosen_bucket, selection, file_path)
+                except Exception as err:
+                    self.set_status(f'Error downloading: {err}')
+                    break
+
             self.refresh_local()
             self.set_status('Downloaded...', clear=True)
