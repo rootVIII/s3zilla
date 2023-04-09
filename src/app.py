@@ -11,13 +11,13 @@ from tkinter.filedialog import askdirectory
 from tkinter.messagebox import askyesno
 
 
-from src.s3_client import S3Client
+from src.s3_client import S3Session
 from src.utils import folder_walk
 
 
-class App(S3Client):
+class App(S3Session):
     def __init__(self, master):
-        S3Client.__init__(self)
+        S3Session.__init__(self)
         light_gray = '#D9D9D9'
         blue = '#181B42'
         green = '#33CC00'
