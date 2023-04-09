@@ -5,7 +5,7 @@ from os import listdir, remove
 from os.path import realpath, isdir, basename
 from shutil import rmtree
 from tkinter import Menu, StringVar, Label, OptionMenu
-from tkinter import Button, Listbox, E, W
+from tkinter import Button, Listbox, E, W, PhotoImage
 from tkinter.filedialog import askdirectory
 from tkinter.messagebox import askyesno
 
@@ -22,7 +22,7 @@ class App(S3Client):
         red = '#FF0000'
         black = '#000000'
         cyan = '#80DFFF'
-        bold = 'Helvetica 10 bold underline'
+        bold = 'Helvetica 10 bold'
         normal = 'Helvetica 10'
 
         self.finish_thread = None
@@ -31,8 +31,9 @@ class App(S3Client):
         self.master.title('Amazon S3 File Transfer Client')
         self.master.configure(bg=black)
 
+        self.src = realpath(__file__)[:-len(basename(__file__))]
         self.master.geometry('600x500')
-        self.master.iconbitmap(f'{realpath(__file__)[:-len(basename(__file__))]}icon.ico')
+        self.master.iconbitmap(f'{self.src}icon.ico')
         self.master.maxsize('1400', '700')
         self.master.minsize('600', '500')
 
@@ -47,6 +48,8 @@ class App(S3Client):
         refresh.add_command(label='S3', command=self.refresh_s3)
         menu.add_cascade(label='Refresh', menu=refresh)
 
+        self.refresh_img = PhotoImage(master=master, file=f'{self.src}refresh.png')
+
         self.chosen_directory, self.chosen_bucket = '', ''
 
         self.folder_path = StringVar()
@@ -58,11 +61,11 @@ class App(S3Client):
             self.available_buckets = ['none available']
 
         self.local_label = Label(master, fg=light_gray, bg=black, font=bold,
-                                 width=24, text='LOCAL FILE SYSTEM')
+                                 width=24, text='LOCAL')
         self.local_label.grid(row=0, column=0, sticky=E+W, padx=10, pady=20)
 
         self.s3_label = Label(master, fg=light_gray, bg=black, font=bold,
-                              underline=True, width=24, text='AMAZON  S3')
+                              width=24, text='AWS S3')
         self.s3_label.grid(row=0, column=1, sticky=E+W, padx=10, pady=20)
 
         self.dropdown_box = OptionMenu(master, self.dropdown, *self.available_buckets,
@@ -84,14 +87,16 @@ class App(S3Client):
                                   font=normal, text='No bucket selected')
         self.bucket_label.grid(row=2, column=1, sticky=E+W, padx=10, pady=10)
 
-        self.refresh_btn_local = Button(master, fg=light_gray, bg=blue, text='REFRESH',
-                                        width=10, highlightbackground=black,
-                                        highlightthickness=2, command=self.refresh_local)
+        self.refresh_btn_local = Button(master, fg=light_gray, bg=blue,
+                                        image=self.refresh_img, width=10,
+                                        highlightbackground=black,
+                                        command=self.refresh_local)
         self.refresh_btn_local.grid(row=3, column=0, sticky=E+W, padx=50, pady=10)
 
-        self.refresh_btn_s3 = Button(master, fg=light_gray, bg=blue, text='REFRESH',
-                                     width=10, highlightbackground=black,
-                                     highlightthickness=2, command=self.refresh_s3)
+        self.refresh_btn_s3 = Button(master, fg=light_gray, bg=blue,
+                                     image=self.refresh_img, width=10,
+                                     highlightbackground=black,
+                                     command=self.refresh_s3)
         self.refresh_btn_s3.grid(row=3, column=1, sticky=E+W, padx=50, pady=10)
 
         self.local_explorer = Listbox(master, fg=cyan, bg=black, width=36, height=18,
@@ -121,8 +126,6 @@ class App(S3Client):
                                 width=3, highlightbackground=red, activebackground=red,
                                 command=self.delete_s3_records)
         self.delete_s3.grid(row=6, column=1, sticky=E, padx=120, pady=10)
-
-
 
         self.found_label_local = Label(master, fg=light_gray, bg=black,
                                        text='found local', width=16)
