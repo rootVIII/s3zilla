@@ -131,22 +131,10 @@ class App(S3Client):
                                       command=self.download)
         self.download_button.grid(row=6, column=1, sticky=W, padx=120, pady=10)
 
-
-
-
-
-
-
         self.delete_s3 = Button(master, fg=red, bg=blue, text=unescape('❌'),
                                 width=3, highlightbackground=red, activebackground=red,
                                 command=self.delete_s3_records)
         self.delete_s3.grid(row=6, column=1, sticky=E, padx=123, pady=10)
-
-
-
-
-
-
 
         self.found_label_local = Label(master, fg=light_gray, bg=black,
                                        text='found local', width=16)
