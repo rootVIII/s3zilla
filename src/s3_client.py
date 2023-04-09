@@ -7,7 +7,7 @@ class S3:
         self.session = Session()
 
 
-class S3Session(S3):
+class S3Client(S3):
     def __init__(self):
         S3.__init__(self)
         self.session_client = self.session.client('s3')
@@ -38,7 +38,7 @@ class S3Resource(S3):
         return [summary.key for summary in bucket.objects.filter()]
 
 
-class S3Client(S3Session, S3Resource):
+class S3Session(S3Client, S3Resource):
     def __init__(self):
-        S3Session.__init__(self)
+        S3Client.__init__(self)
         S3Resource.__init__(self)
