@@ -34,7 +34,7 @@ and ```test/test2.docx``` in S3.
 Likewise if an S3 object named ```test/some_folder/file.txt``` is downloaded
 from S3 to the local machine, a folder named ```test/``` will be placed
 in the chosen local directory. It will contain another folder named
-```some_folder``` and contain ```file.txt```. These directories will be created
+```some_folder``` that contains ```file.txt```. These directories will be created
 if they do not already exist.
 <br><br>
 The application assumes does not currently have the capability to set
