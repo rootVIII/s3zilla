@@ -1,6 +1,8 @@
+"""
 MIT License
 
 Copyright (c) 2019-2023 rootVIII
+
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +21,19 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+"""
+from src.app import App
+from tkinter import Tk
+
+
+def run_app():
+    root = Tk()
+    App(root)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    try:
+        run_app()
+    except KeyboardInterrupt:
+        exit()
