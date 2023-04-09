@@ -193,7 +193,7 @@ class App(S3Client):
     def get_bucket_contents(self):
         return self.list_bucket_contents(self.chosen_bucket)
 
-    def set_chosen_bucket(self, selection: str):
+    def set_chosen_bucket(self, selection: StringVar):
         self.chosen_bucket = selection
 
     def refresh_local(self):
