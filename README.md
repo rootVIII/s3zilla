@@ -1,7 +1,7 @@
 # s3zilla
 #### An S3 file-transfer client for Windows, developed in Python
 
-<img src="https://user-images.githubusercontent.com/30498791/230790628-2eca6bb0-83b0-4388-a067-b8551e9427af.gif" alt="ex">
+<img src="https://user-images.githubusercontent.com/30498791/230790628-2eca6bb0-83b0-4388-a067-b8551e9427af.gif" height="600, width=500" alt="ex">
 <hr>
 
 <br><br>
