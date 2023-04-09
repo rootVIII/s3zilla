@@ -87,17 +87,23 @@ class App(S3Client):
                                   font=normal, text='No bucket selected')
         self.bucket_label.grid(row=2, column=1, sticky=E+W, padx=10, pady=10)
 
-        self.refresh_btn_local = Button(master, fg=light_gray, bg=blue,
-                                        image=self.refresh_img, width=10,
+        self.refresh_btn_local = Button(master, fg=light_gray, bg=black,
+                                        image=self.refresh_img, width=20,
+                                        borderwidth=0,
+                                        highlightcolor=black,
                                         highlightbackground=black,
+                                        highlightthickness=0,
                                         command=self.refresh_local)
-        self.refresh_btn_local.grid(row=3, column=0, sticky=E+W, padx=50, pady=10)
+        self.refresh_btn_local.grid(row=3, column=0)
 
-        self.refresh_btn_s3 = Button(master, fg=light_gray, bg=blue,
-                                     image=self.refresh_img, width=10,
+        self.refresh_btn_s3 = Button(master, fg=light_gray, bg=black,
+                                     image=self.refresh_img, width=20,
+                                     borderwidth=0,
+                                     highlightcolor=black,
                                      highlightbackground=black,
+                                     highlightthickness=0,
                                      command=self.refresh_s3)
-        self.refresh_btn_s3.grid(row=3, column=1, sticky=E+W, padx=50, pady=10)
+        self.refresh_btn_s3.grid(row=3, column=1)
 
         self.local_explorer = Listbox(master, fg=cyan, bg=black, width=36, height=18,
                                       highlightcolor=black, selectmode='multiple')
