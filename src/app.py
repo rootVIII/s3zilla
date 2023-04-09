@@ -79,14 +79,6 @@ class App(S3Client):
                                     highlightthickness=2, command=self.load_dir)
         self.browse_button.grid(row=1, column=0, sticky=E+W, padx=52, pady=10)
 
-        self.browse_label = Label(master, fg=light_gray, bg=black, width=24,
-                                  font=normal, text='No directory selected')
-        self.browse_label.grid(row=2, column=0, sticky=E+W, padx=10, pady=10)
-
-        self.bucket_label = Label(master, fg=light_gray, bg=black, width=24,
-                                  font=normal, text='No bucket selected')
-        self.bucket_label.grid(row=2, column=1, sticky=E+W, padx=10, pady=10)
-
         self.refresh_btn_local = Button(master, fg=light_gray, bg=black,
                                         image=self.refresh_img, width=20,
                                         borderwidth=0,
@@ -94,7 +86,7 @@ class App(S3Client):
                                         highlightbackground=black,
                                         highlightthickness=0,
                                         command=self.refresh_local)
-        self.refresh_btn_local.grid(row=3, column=0)
+        self.refresh_btn_local.grid(row=2, column=0)
 
         self.refresh_btn_s3 = Button(master, fg=light_gray, bg=black,
                                      image=self.refresh_img, width=20,
@@ -103,7 +95,15 @@ class App(S3Client):
                                      highlightbackground=black,
                                      highlightthickness=0,
                                      command=self.refresh_s3)
-        self.refresh_btn_s3.grid(row=3, column=1)
+        self.refresh_btn_s3.grid(row=2, column=1)
+
+        self.browse_label = Label(master, fg=light_gray, bg=black, width=24,
+                                  font=normal, text='No directory selected')
+        self.browse_label.grid(row=3, column=0, sticky=E+W, padx=10, pady=10)
+
+        self.bucket_label = Label(master, fg=light_gray, bg=black, width=24,
+                                  font=normal, text='No bucket selected')
+        self.bucket_label.grid(row=3, column=1, sticky=E+W, padx=10, pady=10)
 
         self.local_explorer = Listbox(master, fg=cyan, bg=black, width=36, height=18,
                                       highlightcolor=black, selectmode='multiple')
