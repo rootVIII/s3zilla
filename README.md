@@ -22,12 +22,20 @@ A local directory may only be uploaded to S3 using s3zilla if it
 contains at least one file. S3 itself doesn't really have a concept
 of folders, but s3zilla directory uploads will follow the same
 structure as the given folder being uploaded. Therefor directories
-found in an S3 bucket that are visible within s3zill are not actually
-be directories; they are a representation of directories that are
-actually S3 file objects. For example, if a directory is uploaded to
+found in an S3 bucket that are visible within s3zilla are not actually
+directories; they are a representation of directories that are
+actually S3 file objects.
+<br><br>
+For example, if a directory is uploaded to
 S3 from your local machine with the name test/ and contains two files
 named test1.pdf and test2.docx, they will appear as test/test1.pdf
 and test/test2.docx in S3.
+<br><br>
+Likewise if an S3 object named test/some_folder/file.txt is downloaded
+from S3 to the local machine, a folder named test/ will be placed
+in the chosen local directory. It will contain another folder named
+some_folder and contain file.txt. These directories will be created
+if they do not already exist.
 <br><br>
 The application assumes ACLs are disabled per each object in the contents of the bucket
 and does not put private/public/readOnly ACLs on uploaded file-objects.
