@@ -155,29 +155,29 @@ class App(S3Client):
     def quit_app():
         exit()
 
-    def set_status(self, text, clear=False):
+    def set_status(self, text: str, clear: bool = False):
         self.status_label.config(text=text)
         if clear:
             self.status_label.after(3000, self.clear_status)
         self.status_label.update_idletasks()
 
-    def set_found_local_label(self, text):
+    def set_found_local_label(self, text: str):
         self.found_label_local.config(text=text)
         self.found_label_local.update_idletasks()
 
-    def set_found_s3_label(self, text):
+    def set_found_s3_label(self, text: str):
         self.found_label_s3.config(text=text)
         self.found_label_s3.update_idletasks()
 
     @staticmethod
-    def check_file_path_len(text):
+    def check_file_path_len(text: str):
         return text if len(text) < 60 \
             else f'.../{[item.strip() for item in text.split("/") if item.strip()][-1]}'[:60]
 
-    def set_local_browse_label(self, text):
+    def set_local_browse_label(self, text: str):
         self.browse_label.config(text=self.check_file_path_len(text))
 
-    def set_s3_bucket_label(self, text):
+    def set_s3_bucket_label(self, text: str):
         self.bucket_label.config(text=self.check_file_path_len(text))
 
     def clear_status(self):
@@ -189,7 +189,10 @@ class App(S3Client):
     def get_s3_sel(self):
         return [self.s3_explorer.get(item) for item in self.s3_explorer.curselection()]
 
-    def set_chosen_bucket(self, selection):
+    def get_bucket_contents(self):
+        return self.list_bucket_contents(self.chosen_bucket)
+
+    def set_chosen_bucket(self, selection: str):
         self.chosen_bucket = selection
 
     def refresh_local(self):
@@ -307,6 +310,3 @@ class App(S3Client):
                 # TODO: self.download_s3(self.chosen_bucket, selection, file_name)
             self.refresh_local()
             self.set_status('Downloaded...', clear=True)
-
-    def get_bucket_contents(self):
-        return self.list_bucket_contents(self.chosen_bucket)
