@@ -37,7 +37,7 @@ in the chosen local directory. It will contain another folder named
 ```some_folder``` that contains ```file.txt```. These directories will be created
 if they do not already exist.
 <br><br>
-The application assumes does not currently have the capability to set
+s3zilla does not currently have the capability to set
 private/public/readOnly ACLs on uploaded file-objects; AWS now disables
 this feature by default when creating a new bucket.
 <br><br>
