@@ -171,9 +171,8 @@ class App(S3Client):
 
     @staticmethod
     def check_file_path_len(text):
-        if len(text) < 60:
-            return text
-        return f'.../{[item.strip() for item in text.split("/") if item.strip()][-1]}'[:60]
+        return text if len(text) < 60 \
+            else f'.../{[item.strip() for item in text.split("/") if item.strip()][-1]}'[:60]
 
     def set_local_browse_label(self, text):
         self.browse_label.config(text=self.check_file_path_len(text))
@@ -305,7 +304,7 @@ class App(S3Client):
             for selection in self.get_s3_sel():
                 file_name = f'{self.chosen_directory}/{selection}'
                 print(file_name)
-                # self.download_s3(self.chosen_bucket, selection, file_name)
+                # TODO: self.download_s3(self.chosen_bucket, selection, file_name)
             self.refresh_local()
             self.set_status('Downloaded...', clear=True)
 
