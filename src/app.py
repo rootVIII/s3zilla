@@ -35,10 +35,10 @@ class App(S3Client):
         self.master.configure(bg=black)
 
         self.src = realpath(__file__)[:-len(basename(__file__))]
-        self.master.geometry('600x700')
+        self.master.geometry('600x650')
         self.master.iconbitmap(f'{self.src}icon.ico')
-        self.master.maxsize('600', '700')
-        self.master.minsize('600', '700')
+        self.master.minsize('600', '650')
+        self.master.maxsize('700', '800')
 
         menu = Menu(self.master)
         menu.config(background=black, fg=light_gray)
