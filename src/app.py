@@ -215,16 +215,15 @@ class App(S3Client):
         msg = 'Finished deleting'
         if files:
             for file_name in files:
-                file_path = f'{self.chosen_directory}\\{file_name}'
-                if not isdir(file_path):
-                    try:
-                        if not isdir(file_path):
-                            remove(file_path)
-                        else:
-                            rmtree(file_path)
-                    except Exception as err:
-                        msg = f'Error occurred: {err}'
-                        break
+                file_path = f'{self.chosen_directory}/{file_name}'
+                try:
+                    if not isdir(file_path):
+                        remove(file_path)
+                    else:
+                        rmtree(file_path)
+                except Exception as err:
+                    msg = f'Error occurred: {err}'
+                    break
 
         self.refresh_local()
         self.set_status(msg, clear=True)
