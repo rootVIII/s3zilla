@@ -34,7 +34,7 @@ class App(S3Session):
         self.master.title('S3 File Transfer Client')
         self.master.configure(bg=black)
 
-        self.src = realpath(__file__)[:-len(basename(__file__))]
+        self.src = realpath(__file__)[: -len(basename(__file__))]
         self.master.geometry('600x650')
         self.master.iconbitmap(f'{self.src}icon.ico')
         self.master.minsize('600', '650')
@@ -60,92 +60,138 @@ class App(S3Session):
 
         try:
             self.available_buckets = self.list_avail_buckets()
+            if not self.available_buckets:
+                self.available_buckets = ['none available']
         except Exception:
             self.available_buckets = ['none available']
 
-        self.local_label = Label(master, fg=green, bg=black, font=bold,
-                                 width=24, text='LOCAL')
-        self.local_label.grid(row=0, column=0, sticky=E+W, padx=10, pady=20)
+        self.local_label = Label(master, fg=green, bg=black, font=bold, width=24, text='LOCAL')
+        self.local_label.grid(row=0, column=0, sticky=E + W, padx=10, pady=20)
 
-        self.s3_label = Label(master, fg=green, bg=black, font=bold,
-                              width=24, text='AWS S3')
-        self.s3_label.grid(row=0, column=1, sticky=E+W, padx=10, pady=20)
+        self.s3_label = Label(master, fg=green, bg=black, font=bold, width=24, text='AWS S3')
+        self.s3_label.grid(row=0, column=1, sticky=E + W, padx=10, pady=20)
 
-        self.browse_button = Button(master, fg=light_gray, bg=blue, text='Browse',
-                                    width=34, highlightbackground=black,
-                                    highlightthickness=2, command=self.load_dir)
+        self.browse_button = Button(
+            master,
+            fg=light_gray,
+            bg=blue,
+            text='Browse',
+            width=34,
+            highlightbackground=black,
+            highlightthickness=2,
+            command=self.load_dir,
+        )
         self.browse_button.grid(row=1, column=0, sticky=W, padx=10, pady=10)
 
-        self.refresh_btn_local = Button(master, fg=light_gray, bg=black,
-                                        image=self.refresh_img, width=20,
-                                        borderwidth=0, highlightcolor=black,
-                                        highlightbackground=black,
-                                        highlightthickness=0,
-                                        command=self.refresh_local)
+        self.refresh_btn_local = Button(
+            master,
+            fg=light_gray,
+            bg=black,
+            image=self.refresh_img,
+            width=20,
+            borderwidth=0,
+            highlightcolor=black,
+            highlightbackground=black,
+            highlightthickness=0,
+            command=self.refresh_local,
+        )
         self.refresh_btn_local.grid(row=1, sticky=E, column=0, padx=9)
 
-        self.dropdown_box = OptionMenu(master, self.dropdown, *self.available_buckets,
-                                       command=self.set_chosen_bucket)
-        self.dropdown_box.configure(fg=light_gray, bg=blue, width=36,
-                                    highlightbackground=black, highlightthickness=2)
+        self.dropdown_box = OptionMenu(
+            master, self.dropdown, *self.available_buckets, command=self.set_chosen_bucket
+        )
+        self.dropdown_box.configure(
+            fg=light_gray, bg=blue, width=36, highlightbackground=black, highlightthickness=2
+        )
         self.dropdown_box.grid(row=1, column=1, sticky=W, padx=10, pady=10)
 
-        self.refresh_btn_s3 = Button(master, fg=light_gray, bg=black,
-                                     image=self.refresh_img, width=20,
-                                     borderwidth=0, highlightcolor=black,
-                                     highlightbackground=black,
-                                     highlightthickness=0,
-                                     command=self.refresh_s3)
+        self.refresh_btn_s3 = Button(
+            master,
+            fg=light_gray,
+            bg=black,
+            image=self.refresh_img,
+            width=20,
+            borderwidth=0,
+            highlightcolor=black,
+            highlightbackground=black,
+            highlightthickness=0,
+            command=self.refresh_s3,
+        )
         self.refresh_btn_s3.grid(row=1, sticky=E, column=1, padx=10)
 
-        self.browse_label = Label(master, fg=light_gray, bg=black, width=24,
-                                  font=normal, text='No directory selected')
-        self.browse_label.grid(row=3, column=0, sticky=E+W, padx=10, pady=10)
+        self.browse_label = Label(
+            master, fg=light_gray, bg=black, width=24, font=normal, text='No directory selected'
+        )
+        self.browse_label.grid(row=3, column=0, sticky=E + W, padx=10, pady=10)
 
-        self.bucket_label = Label(master, fg=light_gray, bg=black, width=24,
-                                  font=normal, text='No bucket selected')
-        self.bucket_label.grid(row=3, column=1, sticky=E+W, padx=10, pady=10)
+        self.bucket_label = Label(
+            master, fg=light_gray, bg=black, width=24, font=normal, text='No bucket selected'
+        )
+        self.bucket_label.grid(row=3, column=1, sticky=E + W, padx=10, pady=10)
 
-        self.local_explorer = Listbox(master, fg=cyan, bg=black, width=36, height=24,
-                                      highlightcolor=black, selectmode='multiple')
-        self.local_explorer.grid(row=5, column=0, sticky=E+W, padx=10, pady=10)
+        self.local_explorer = Listbox(
+            master, fg=cyan, bg=black, width=36, height=24, highlightcolor=black, selectmode='multiple'
+        )
+        self.local_explorer.grid(row=5, column=0, sticky=E + W, padx=10, pady=10)
 
-        self.s3_explorer = Listbox(master, fg=cyan, bg=black, width=36, height=24,
-                                   highlightcolor=black, selectmode='multiple')
-        self.s3_explorer.grid(row=5, column=1, sticky=E+W, padx=10, pady=10)
+        self.s3_explorer = Listbox(
+            master, fg=cyan, bg=black, width=36, height=24, highlightcolor=black, selectmode='multiple'
+        )
+        self.s3_explorer.grid(row=5, column=1, sticky=E + W, padx=10, pady=10)
 
-        self.upload_button = Button(master, fg=cyan, bg=blue,
-                                    text=unescape('&emsp; &thinsp;▶️'),
-                                    width=3, highlightbackground=black,
-                                    command=self.upload)
+        self.upload_button = Button(
+            master,
+            fg=cyan,
+            bg=blue,
+            text=unescape('&emsp; &thinsp;▶️'),
+            width=3,
+            highlightbackground=black,
+            command=self.upload,
+        )
         self.upload_button.grid(row=6, column=0, sticky=E, padx=120, pady=10)
 
-        self.delete_local = Button(master, fg=red, bg=blue, text=unescape('❌'),
-                                   width=3, highlightbackground=red, activebackground=red,
-                                   command=self.delete_local_records)
+        self.delete_local = Button(
+            master,
+            fg=red,
+            bg=blue,
+            text=unescape('❌'),
+            width=3,
+            highlightbackground=red,
+            activebackground=red,
+            command=self.delete_local_records,
+        )
         self.delete_local.grid(row=6, column=0, sticky=W, padx=114)
 
-        self.download_button = Button(master, fg=cyan, bg=blue,
-                                      text=unescape('&emsp;&thinsp;◀️'),
-                                      width=3,  highlightbackground=black,
-                                      command=self.download)
+        self.download_button = Button(
+            master,
+            fg=cyan,
+            bg=blue,
+            text=unescape('&emsp;&thinsp;◀️'),
+            width=3,
+            highlightbackground=black,
+            command=self.download,
+        )
         self.download_button.grid(row=6, column=1, sticky=W, padx=120, pady=10)
 
-        self.delete_s3 = Button(master, fg=red, bg=blue, text=unescape('❌'),
-                                width=3, highlightbackground=red, activebackground=red,
-                                command=self.delete_s3_records)
+        self.delete_s3 = Button(
+            master,
+            fg=red,
+            bg=blue,
+            text=unescape('❌'),
+            width=3,
+            highlightbackground=red,
+            activebackground=red,
+            command=self.delete_s3_records,
+        )
         self.delete_s3.grid(row=6, column=1, sticky=E, padx=123, pady=10)
 
-        self.found_label_local = Label(master, fg=light_gray, bg=black,
-                                       text='found local', width=16)
-        self.found_label_local.grid(row=7, column=0, sticky=E+W, padx=10, pady=10)
+        self.found_label_local = Label(master, fg=light_gray, bg=black, text='found local', width=16)
+        self.found_label_local.grid(row=7, column=0, sticky=E + W, padx=10, pady=10)
 
-        self.found_label_s3 = Label(master, fg=light_gray, bg=black,
-                                    text='found s3', width=16)
-        self.found_label_s3.grid(row=7, column=1, sticky=E+W, padx=10, pady=10)
+        self.found_label_s3 = Label(master, fg=light_gray, bg=black, text='found s3', width=16)
+        self.found_label_s3.grid(row=7, column=1, sticky=E + W, padx=10, pady=10)
 
-        self.status_label = Label(master, fg=magenta, bg=black,
-                                  text=self.greeting, width=8)
+        self.status_label = Label(master, fg=magenta, bg=black, text=self.greeting, width=8)
         self.status_label.grid(row=8, column=0, sticky=E + W, padx=10, pady=10)
 
         self.master.grid_columnconfigure(0, weight=1)
@@ -175,8 +221,11 @@ class App(S3Session):
 
     @staticmethod
     def check_file_path_len(text: str):
-        return text if len(text) < 60 \
+        return (
+            text
+            if len(text) < 60
             else f'.../{[item.strip() for item in text.split("/") if item.strip()][-1]}'[:60]
+        )
 
     def set_local_browse_label(self, text: str):
         self.browse_label.config(text=self.check_file_path_len(text))
@@ -207,8 +256,10 @@ class App(S3Session):
             self.set_local_browse_label(self.chosen_directory)
             self.local_explorer.delete(0, 'end')
             current_dir = f'{self.chosen_directory}\\'
-            files = [file_name if not isdir(f'{current_dir}{file_name}') else f'{file_name}/'
-                     for file_name in sorted(listdir(current_dir))]
+            files = [
+                file_name if not isdir(f'{current_dir}{file_name}') else f'{file_name}/'
+                for file_name in sorted(listdir(current_dir))
+            ]
             self.local_explorer.insert('end', *files)
             files_found = f'{self.local_explorer.size()} files found'
             self.set_found_local_label(files_found)
@@ -297,8 +348,9 @@ class App(S3Session):
                     continue
                 for file_name in folder_walk(file_path, []):
                     if not isdir(file_name):
-                        self.upload_s3(file_name, self.chosen_bucket,
-                                       file_name[len(self.chosen_directory) + 1:])
+                        self.upload_s3(
+                            file_name, self.chosen_bucket, file_name[len(self.chosen_directory) + 1 :]
+                        )
 
             self.refresh_s3()
             self.set_status('Finished uploading...', clear=True)
